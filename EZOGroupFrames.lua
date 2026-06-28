@@ -14,6 +14,7 @@ local DEFAULTS = {
         x = 260,
         y = 260,
         showOnlyInGroup = true,
+        hideNativeWhenActive = true,
         showLevel = false,
         showClass = false,
         tankColor = { r = 0.88, g = 0.28, b = 0.22, a = 1.0 },
@@ -95,6 +96,9 @@ function ADDON.Initialize()
     end
     if EZOGroupFrames_GroupState and EZOGroupFrames_GroupState.Init then
         EZOGroupFrames_GroupState.Init()
+    end
+    if EZOGroupFrames_NativeFrames and EZOGroupFrames_NativeFrames.Init then
+        EZOGroupFrames_NativeFrames.Init()
     end
     if EZOGroupFrames_Frames and EZOGroupFrames_Frames.Init then
         EZOGroupFrames_Frames.Init()

@@ -16,8 +16,8 @@ Use the UNC `\\RZRNAS` path in project handoffs and docs.
 
 ## Status
 
-- Version: `0.1.2`
-- AddOnVersion: `102`
+- Version: `0.1.3`
+- AddOnVersion: `103`
 - APIVersion: `101049 101050`
 - Phase: first-playtest prototype
 - Remote expected: `https://github.com/Zuriplayer/EZOGroupFrames.git`
@@ -35,6 +35,7 @@ Current implementation is deliberately conservative:
 - visual controls are HUD/HUD_UI only
 - health bars are grouped 4 by 4 and sorted by role
 - tank, healer, DD and unknown role colors are configurable
+- ESO native group frames are hidden while EZOGroupFrames is actively showing its own frames
 - debug mode includes a LAM button that shows a simulated group of 4: 1 tank, 1 healer and 2 DD
 - detailed debug output is routed through Debug Viewer / LibDebugLogger when available
 

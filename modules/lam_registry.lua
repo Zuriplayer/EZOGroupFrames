@@ -102,6 +102,20 @@ local function RegisterBaseSections()
             },
             {
                 type = "checkbox",
+                name = GetString(EZO_GF_OPTION_HIDE_NATIVE),
+                tooltip = GetString(EZO_GF_OPTION_HIDE_NATIVE_TOOLTIP),
+                getFunc = function() return addon.sv.frames.hideNativeWhenActive ~= false end,
+                setFunc = function(value)
+                    addon.sv.frames.hideNativeWhenActive = value ~= false
+                    if EZOGroupFrames_NativeFrames and EZOGroupFrames_NativeFrames.Refresh then
+                        EZOGroupFrames_NativeFrames.Refresh()
+                    end
+                    RefreshFrames()
+                end,
+                default = true,
+            },
+            {
+                type = "checkbox",
                 name = GetString(EZO_GF_OPTION_SHOW_LEVEL),
                 getFunc = function() return addon.sv.frames.showLevel == true end,
                 setFunc = function(value) addon.sv.frames.showLevel = value == true; RefreshFrames() end,

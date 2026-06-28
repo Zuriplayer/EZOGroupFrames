@@ -38,6 +38,10 @@ local function ShouldShow(members)
     return true
 end
 
+function FRAMES.IsShowing()
+    return FRAMES.container and FRAMES.container:IsHidden() == false
+end
+
 local function GetRoleLabel(role)
     if role == LFG_ROLE_TANK then
         return GetString(EZO_GF_ROLE_TANK)
@@ -293,6 +297,9 @@ function FRAMES.Refresh()
 
     local show = ShouldShow(members)
     FRAMES.container:SetHidden(not show)
+    if EZOGroupFrames_NativeFrames and EZOGroupFrames_NativeFrames.ApplyVisibility then
+        EZOGroupFrames_NativeFrames.ApplyVisibility(show)
+    end
     if not show then
         return
     end
