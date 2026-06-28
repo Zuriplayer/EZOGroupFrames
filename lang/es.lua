@@ -1,0 +1,17 @@
+EZO_GROUP_FRAMES_STRINGS_ES = {
+    EZO_GF_MENU_GENERAL = "General",
+    EZO_GF_MENU_FRAMES = "Frames de grupo",
+    EZO_GF_OPTION_LANGUAGE = "Idioma",
+    EZO_GF_OPTION_LANGUAGE_TOOLTIP = "Elige el idioma del addon. Auto sigue el idioma del cliente de ESO.",
+    EZO_GF_OPTION_LANGUAGE_AUTO = "Auto",
+    EZO_GF_OPTION_FRAMES_ENABLE = "Activar frames propios de grupo",
+    EZO_GF_OPTION_FRAMES_ENABLE_TOOLTIP = "Muestra el panel propio de EZOGroupFrames. No oculta los frames por defecto de ESO.",
+    EZO_GF_OPTION_FRAMES_LOCK = "Bloquear posicion",
+    EZO_GF_OPTION_FRAMES_SCALE = "Escala de frames",
+    EZO_GF_OPTION_FRAMES_GROUP_ONLY = "Mostrar solo en grupo",
+    EZO_GF_OPTION_DEBUG = "Debug",
+    EZO_GF_OPTION_DEBUG_MODE = "Activar modo debug",
+    EZO_GF_OPTION_DEBUG_MODE_TOOLTIP = "Escribe mensajes tecnicos compactos solo cuando el modo debug esta activo.",
+    EZO_GF_STATUS_NOT_GROUPED = "Sin grupo",
+    EZO_GF_STATUS_GROUP = "Grupo",
+}

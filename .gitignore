@@ -1,0 +1,8 @@
+.codex/
+.vscode/
+dist/
+build/
+node_modules/
+*.log
+*.tmp
+*.bak
