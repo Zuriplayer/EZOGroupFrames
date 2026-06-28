@@ -159,8 +159,32 @@ local function RegisterBaseSections()
                 name = GetString(EZO_GF_OPTION_DEBUG_MODE),
                 tooltip = GetString(EZO_GF_OPTION_DEBUG_MODE_TOOLTIP),
                 getFunc = function() return addon.sv.general.debug == true end,
-                setFunc = function(value) addon.sv.general.debug = value == true end,
+                setFunc = function(value)
+                    addon.sv.general.debug = value == true
+                    if addon.sv.general.debug ~= true
+                        and EZOGroupFrames_DebugSimulation
+                        and EZOGroupFrames_DebugSimulation.IsActive
+                        and EZOGroupFrames_DebugSimulation.IsActive()
+                    then
+                        EZOGroupFrames_DebugSimulation.SetActive(false)
+                    end
+                end,
                 default = false,
+            },
+            {
+                type = "button",
+                name = GetString(EZO_GF_OPTION_DEBUG_SIMULATED_GROUP),
+                tooltip = GetString(EZO_GF_OPTION_DEBUG_SIMULATED_GROUP_TOOLTIP),
+                func = function()
+                    if EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.Toggle then
+                        EZOGroupFrames_DebugSimulation.Toggle()
+                    end
+                    if EZOGroupFrames_Debug and EZOGroupFrames_Debug.ShowViewer then
+                        EZOGroupFrames_Debug.ShowViewer()
+                    end
+                end,
+                disabled = function() return addon.sv.general.debug ~= true end,
+                width = "full",
             },
         }
     end)

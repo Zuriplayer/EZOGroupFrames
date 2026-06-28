@@ -53,6 +53,17 @@ local function GetRoleSort(role)
     return ROLE_SORT[role] or 4
 end
 
+local function ApplySort(members)
+    table.sort(members, function(a, b)
+        local aSort = a.roleSort or GetRoleSort(a.role)
+        local bSort = b.roleSort or GetRoleSort(b.role)
+        if aSort ~= bSort then
+            return aSort < bSort
+        end
+        return tostring(a.name or "") < tostring(b.name or "")
+    end)
+end
+
 local function GetLevelText(unitTag)
     if type(GetUnitChampionPoints) == "function" then
         local championPoints = tonumber(GetUnitChampionPoints(unitTag)) or 0
@@ -103,6 +114,18 @@ local function GetClassText(unitTag)
 end
 
 function STATE.Refresh()
+    if EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.GetMembers then
+        local simulatedMembers = EZOGroupFrames_DebugSimulation.GetMembers()
+        if type(simulatedMembers) == "table" then
+            for _, member in ipairs(simulatedMembers) do
+                member.roleSort = GetRoleSort(member.role)
+            end
+            ApplySort(simulatedMembers)
+            STATE.members = simulatedMembers
+            return
+        end
+    end
+
     local members = {}
     local size = type(GetGroupSize) == "function" and tonumber(GetGroupSize()) or 0
     if size and size > 0 then
@@ -123,12 +146,7 @@ function STATE.Refresh()
             }
         end
     end
-    table.sort(members, function(a, b)
-        if a.roleSort ~= b.roleSort then
-            return a.roleSort < b.roleSort
-        end
-        return tostring(a.name or "") < tostring(b.name or "")
-    end)
+    ApplySort(members)
     STATE.members = members
 end
 

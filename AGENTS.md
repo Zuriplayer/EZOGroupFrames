@@ -66,6 +66,13 @@ Scope inicial:
 
 Ideas futuras se documentan en `docs/IDEAS.md`; no deben implementarse sin nueva decision.
 
+## Debug
+
+- El debug detallado debe ir a Debug Viewer mediante `LibDebugLogger` siempre que este disponible.
+- No volcar debug detallado en chat.
+- Siempre que sea posible y razonable, las herramientas de debug deben vivir en un modulo especifico y dedicado.
+- Las simulaciones de desarrollo deben quedar separadas del renderer y del estado real de grupo.
+
 ## Git y publicacion
 
 - Rama principal: `main`.

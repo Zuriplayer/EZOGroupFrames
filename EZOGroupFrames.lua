@@ -90,6 +90,9 @@ function ADDON.Initialize()
     if EZOGroupFrames_Menu and EZOGroupFrames_Menu.Init then
         EZOGroupFrames_Menu.Init()
     end
+    if EZOGroupFrames_Debug and EZOGroupFrames_Debug.Init then
+        EZOGroupFrames_Debug.Init()
+    end
     if EZOGroupFrames_GroupState and EZOGroupFrames_GroupState.Init then
         EZOGroupFrames_GroupState.Init()
     end

@@ -16,6 +16,9 @@ local FILL_SHEEN_COLOR = { 1.0, 1.0, 1.0, 0.12 }
 local INNER_SHADE_COLOR = { 0, 0, 0, 0.16 }
 
 local function IsEnabled()
+    if EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.IsActive and EZOGroupFrames_DebugSimulation.IsActive() then
+        return true
+    end
     return EZOGroupFrames
         and EZOGroupFrames.sv
         and EZOGroupFrames.sv.frames
