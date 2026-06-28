@@ -8,12 +8,18 @@ local DEFAULTS = {
         debug = false,
     },
     frames = {
-        enabled = false,
+        enabled = true,
         locked = true,
         scale = 1.0,
         x = 260,
         y = 260,
         showOnlyInGroup = true,
+        showLevel = false,
+        showClass = false,
+        tankColor = { r = 0.88, g = 0.28, b = 0.22, a = 1.0 },
+        healerColor = { r = 0.20, g = 0.78, b = 0.34, a = 1.0 },
+        damageColor = { r = 0.32, g = 0.52, b = 1.0, a = 1.0 },
+        unknownColor = { r = 0.72, g = 0.72, b = 0.78, a = 1.0 },
     },
 }
 

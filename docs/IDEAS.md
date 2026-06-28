@@ -8,6 +8,8 @@ Estas ideas quedan aparcadas para cuando se pidan propuestas o roadmap. No son s
 - Opciones separadas para dungeon y trial.
 - Sustitucion de frames vanilla solo si existe setting explicito.
 - Guardar perfiles por trial o tipo de contenido.
+- Asimilar escudos/absorciones activos sobre la salud y estados similares que ayuden a leer supervivencia real.
+- Alternative Group Frame instalado localmente puede servir como referencia secundaria de comportamiento: rol LFG, capas de shield/trauma y opciones de iconos, sin convertirlo en dependencia.
 
 ## "Ya veremos donde"
 
@@ -17,6 +19,7 @@ Puede ser un panel, brujula, minimap propio, overlay de sala u otra superficie f
 - Posicion de companeros del grupo con algun tipo de brujula o minimap.
 - Que el raid lider pueda marcar acciones, grupos, posiciones u ordenes en esa superficie.
 - Que esas marcas se puedan guardar por trial.
+- Cuando los frames basicos funcionen, analizar un minimap o brujula con la posicion de todos los jugadores que tengan el addon.
 
 ## Limites iniciales
 

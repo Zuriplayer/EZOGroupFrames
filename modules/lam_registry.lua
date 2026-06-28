@@ -32,6 +32,19 @@ local function RefreshFrames()
     end
 end
 
+local function GetColor(settings, key, fallback)
+    local color = settings[key]
+    if type(color) ~= "table" then
+        color = fallback
+    end
+    return color.r or fallback.r, color.g or fallback.g, color.b or fallback.b, color.a or fallback.a or 1
+end
+
+local function SetColor(settings, key, r, g, b, a)
+    settings[key] = { r = r, g = g, b = b, a = a or 1 }
+    RefreshFrames()
+end
+
 local function RegisterBaseSections()
     if REG._baseSectionsRegistered then
         return
@@ -88,6 +101,20 @@ local function RegisterBaseSections()
                 default = true,
             },
             {
+                type = "checkbox",
+                name = GetString(EZO_GF_OPTION_SHOW_LEVEL),
+                getFunc = function() return addon.sv.frames.showLevel == true end,
+                setFunc = function(value) addon.sv.frames.showLevel = value == true; RefreshFrames() end,
+                default = false,
+            },
+            {
+                type = "checkbox",
+                name = GetString(EZO_GF_OPTION_SHOW_CLASS),
+                getFunc = function() return addon.sv.frames.showClass == true end,
+                setFunc = function(value) addon.sv.frames.showClass = value == true; RefreshFrames() end,
+                default = false,
+            },
+            {
                 type = "slider",
                 name = GetString(EZO_GF_OPTION_FRAMES_SCALE),
                 min = 0.7,
@@ -97,6 +124,34 @@ local function RegisterBaseSections()
                 getFunc = function() return tonumber(addon.sv.frames.scale) or 1 end,
                 setFunc = function(value) addon.sv.frames.scale = tonumber(value) or 1; RefreshFrames() end,
                 default = 1.0,
+            },
+            {
+                type = "colorpicker",
+                name = GetString(EZO_GF_OPTION_COLOR_TANK),
+                getFunc = function() return GetColor(addon.sv.frames, "tankColor", { r = 0.88, g = 0.28, b = 0.22, a = 1 }) end,
+                setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "tankColor", r, g, b, a) end,
+                default = { r = 0.88, g = 0.28, b = 0.22, a = 1 },
+            },
+            {
+                type = "colorpicker",
+                name = GetString(EZO_GF_OPTION_COLOR_HEALER),
+                getFunc = function() return GetColor(addon.sv.frames, "healerColor", { r = 0.20, g = 0.78, b = 0.34, a = 1 }) end,
+                setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "healerColor", r, g, b, a) end,
+                default = { r = 0.20, g = 0.78, b = 0.34, a = 1 },
+            },
+            {
+                type = "colorpicker",
+                name = GetString(EZO_GF_OPTION_COLOR_DAMAGE),
+                getFunc = function() return GetColor(addon.sv.frames, "damageColor", { r = 0.32, g = 0.52, b = 1.0, a = 1 }) end,
+                setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "damageColor", r, g, b, a) end,
+                default = { r = 0.32, g = 0.52, b = 1.0, a = 1 },
+            },
+            {
+                type = "colorpicker",
+                name = GetString(EZO_GF_OPTION_COLOR_UNKNOWN),
+                getFunc = function() return GetColor(addon.sv.frames, "unknownColor", { r = 0.72, g = 0.72, b = 0.78, a = 1 }) end,
+                setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "unknownColor", r, g, b, a) end,
+                default = { r = 0.72, g = 0.72, b = 0.78, a = 1 },
             },
             { type = "header", name = GetString(EZO_GF_OPTION_DEBUG) },
             {

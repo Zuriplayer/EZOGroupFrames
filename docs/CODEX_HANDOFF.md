@@ -16,23 +16,25 @@ Use the UNC `\\RZRNAS` path in project handoffs and docs.
 
 ## Status
 
-- Version: `0.1.0`
-- AddOnVersion: `100`
+- Version: `0.1.1`
+- AddOnVersion: `101`
 - APIVersion: `101049 101050`
-- Phase: initial scaffold
+- Phase: first-playtest prototype
 - Remote expected: `https://github.com/Zuriplayer/EZOGroupFrames.git`
 
 ## Scope
 
 EZOGroupFrames is intended to manage group frames for dungeon and trial groups.
 
-Initial implementation is deliberately conservative:
+Current implementation is deliberately conservative:
 
 - custom frames are optional
 - vanilla group frames are not hidden
 - no input/keybind behavior
 - no raid-leader automation
 - visual controls are HUD/HUD_UI only
+- health bars are grouped 4 by 4 and sorted by role
+- tank, healer, DD and unknown role colors are configurable
 
 ## Validation
 
