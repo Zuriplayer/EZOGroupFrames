@@ -6,10 +6,10 @@ Canonical path:
 \\RZRNAS\Zuriplayer\Dev\EZOGroupFrames
 ```
 
-Current thread path:
+Live symlink:
 
 ```text
-C:\Users\zurip\Documents\EZOGroupFrames
+C:\Users\zurip\Documents\Elder Scrolls Online\live\AddOns\EZOGroupFrames -> \\RZRNAS\Zuriplayer\Dev\EZOGroupFrames
 ```
 
 Use the UNC `\\RZRNAS` path in project handoffs and docs.
