@@ -10,6 +10,13 @@ Support, bug reports and suggestions: https://discord.gg/ekw8zUAcRm
 
 EZOGroupFrames is in public beta. It is usable for testing, but its layout and feature set may change while the group-frame behavior is validated in real dungeon and trial groups.
 
+## Version Metadata
+
+- Addon version: `0.1.4`
+- AddOnVersion: `104`
+- APIVersion: `101049 101050`
+- Status: public beta
+
 ## Requirements
 
 - The Elder Scrolls Online.
@@ -18,7 +25,7 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 ## Installation
 
-1. Download the addon ZIP.
+1. Clone this repository, or use a published ZIP package when one is available.
 2. Extract it into your ESO AddOns folder so the manifest path is:
 
 ```text
