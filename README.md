@@ -1,40 +1,54 @@
 # EZOGroupFrames
 
-Addon de la familia EZO para gestionar group frames en dungeon y trial.
+Public beta addon for The Elder Scrolls Online that provides compact dungeon and trial group frames.
 
-Este repositorio sigue la filosofia de EZOTools: cambios pequenos, estructura modular, textos bilingues, settings claros, versionado trazable y publicacion separada.
+## Status
 
-Ruta canonica de desarrollo:
+EZOGroupFrames is in public beta. The addon is usable for testing, but the layout and feature set may change while group-frame behavior is validated in real dungeon and trial groups.
+
+## Requirements
+
+- The Elder Scrolls Online
+- LibAddonMenu-2.0
+- Optional for diagnostics: LibDebugLogger and DebugLogViewer
+
+## Installation
+
+1. Download the release ZIP.
+2. Extract it into your ESO AddOns folder so the manifest path is:
 
 ```text
-\\RZRNAS\Zuriplayer\Dev\EZOGroupFrames
+AddOns/EZOGroupFrames/EZOGroupFrames.txt
 ```
 
-Usar siempre esta ruta UNC en handoffs o documentacion nueva.
+3. Enable `EZOGroupFrames` from ESO's AddOns menu.
+4. Reload the UI.
 
-## Estado inicial
+## Features
 
-- Scaffold EZO independiente.
-- Manifest ESO.
-- Bootstrap Lua.
-- `en/es` con selector de idioma en el menu.
-- Menu LibAddonMenu.
-- Guard HUD/HUD_UI para controles visuales.
-- Group frames propios opcionales, sin ocultar los frames vanilla.
-- Herramientas de versionado y empaquetado.
+- Custom group frames for dungeon and trial groups.
+- Members grouped visually in blocks of four.
+- Role sorting and role labels for tank, healer and DD.
+- Role-based health bar colors with settings for tank, healer, DD and unknown roles.
+- Optional level and class text.
+- ESO native group frames can be hidden while EZOGroupFrames is active.
+- English and Spanish localization with an in-addon language selector.
+- Debug-only simulated group of four for testing without a real group.
 
-## Comandos de trabajo
+## Safety Limits
 
-```powershell
-.\tools\bump-version.ps1 -Check
-.\scripts\ezo\build-addon-package.ps1 -Force
-git diff --check
-```
+- The addon does not automate group actions.
+- The addon does not change keybinds or input behavior.
+- The addon only shows its persistent visual controls in ESO HUD/HUD UI scenes.
+- Native group frames are hidden only while EZOGroupFrames is actively showing its own frames, and this can be disabled in settings.
 
-## Publicacion
+## Testing Notes
 
-El ZIP se genera en `dist/`. La publicacion Discord no forma parte automatica de cada commit o push. Ver `docs/ezo-discord-automation.md`.
+For beta testing, please verify:
 
-## Ideas futuras
-
-Ver `docs/IDEAS.md`.
+- Addon loads without Lua errors.
+- `/reloadui` works.
+- The settings menu opens.
+- Custom frames appear in a real group.
+- The debug simulated group appears only when debug mode is enabled.
+- Native group frames return when EZOGroupFrames is disabled or not showing.

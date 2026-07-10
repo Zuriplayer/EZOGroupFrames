@@ -1,8 +1,47 @@
+# Local assistant / editor state
+.agents/
 .codex/
+.cursor/
+.continue/
 .vscode/
+.windsurf/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+docs/CODEX_HANDOFF.md
+
+# Local secrets and overrides
+.env
+.env.*
+.env*
+*.secret
+*.secret.*
+*.secret*
+secrets.*
+*.local
+*.local.*
+*.local*
+
+# Local/private scratch space
+local/
+private/
+scratch/
+tmp/
+temp/
+
+# Build and dependency output
 dist/
 build/
 node_modules/
+
+# Logs, backups, and temporary files
 *.log
 *.tmp
+*.temp
 *.bak
+*.backup
+*.old
+*.orig
+*~
+Thumbs.db
+Desktop.ini

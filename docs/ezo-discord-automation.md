@@ -14,7 +14,7 @@ Este repositorio usa `ezo-addon.json` como configuracion local del addon.
 Para EZOGroupFrames, el ZIP se genera como:
 
 ```text
-dist/EZOGroupFrames_v0.1.3.zip
+dist/EZOGroupFrames_v0.1.4.zip
 ```
 
 Dentro del ZIP debe existir una carpeta raiz:

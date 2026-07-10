@@ -3,14 +3,14 @@
   "addon": {
     "id": "ezogroupframes",
     "name": "EZOGroupFrames",
-    "version": "0.1.3",
-    "status": "prototype",
-    "phase": "first-playtest",
-    "visibility": "private",
+    "version": "0.1.4",
+    "status": "beta",
+    "phase": "public-beta",
+    "visibility": "public",
     "manifest": "EZOGroupFrames.txt",
     "package": {
       "rootFolderName": "EZOGroupFrames",
-      "zipName": "EZOGroupFrames_v0.1.3.zip",
+      "zipName": "EZOGroupFrames_v0.1.4.zip",
       "outputPath": "dist",
       "include": [
         "*.txt",
@@ -25,6 +25,8 @@
       ],
       "exclude": [
         ".codex/**",
+        ".agents/**",
+        ".cursor/**",
         ".github/**",
         ".git/**",
         ".vscode/**",
@@ -36,12 +38,27 @@
         "node_modules/**",
         "build/**",
         "dist/**",
+        "local/**",
+        "private/**",
+        "scratch/**",
+        "tmp/**",
+        "temp/**",
+        "AGENTS.md",
+        "docs/CODEX_HANDOFF.md",
         "*.md",
         "*.ps1",
         "*.sh",
         "*.log",
+        ".env*",
+        "*.secret*",
+        "secrets.*",
+        "*.local*",
         "*.tmp",
-        "*.bak"
+        "*.temp",
+        "*.bak",
+        "*.backup",
+        "*.old",
+        "*.orig"
       ]
     }
   },
