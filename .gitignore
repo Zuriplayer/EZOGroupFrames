@@ -4,8 +4,10 @@
 .cursor/
 .continue/
 .vscode/
+.idea/
 .windsurf/
 AGENTS.md
+AGENTS.local.md
 CLAUDE.md
 GEMINI.md
 docs/CODEX_HANDOFF.md
@@ -28,6 +30,7 @@ private/
 scratch/
 tmp/
 temp/
+notes/private/
 
 # Build and dependency output
 dist/
@@ -42,6 +45,8 @@ node_modules/
 *.backup
 *.old
 *.orig
+*.private.md
+private-notes.md
 *~
 Thumbs.db
 Desktop.ini
