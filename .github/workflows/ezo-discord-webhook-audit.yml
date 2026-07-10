@@ -1,0 +1,39 @@
+name: EZO Discord webhook audit
+
+on:
+  workflow_dispatch:
+
+jobs:
+  audit-webhooks:
+    runs-on: windows-latest
+    steps:
+      - name: Resolve Discord webhook channels
+        shell: pwsh
+        env:
+          CODEX_LOG: ${{ secrets.CODEX_LOG }}
+          EZO_CODEX_ANNOUNCER: ${{ secrets.EZO_CODEX_ANNOUNCER }}
+          EZO_CODEX_BETA_BUILDS: ${{ secrets.EZO_CODEX_BETA_BUILDS }}
+          EZO_CODEX_DOWNLOADS: ${{ secrets.EZO_CODEX_DOWNLOADS }}
+          EZO_CODEX_RELEASES: ${{ secrets.EZO_CODEX_RELEASES }}
+          EZO_CODEX_STATUS: ${{ secrets.EZO_CODEX_STATUS }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $webhooks = [ordered]@{
+            CODEX_LOG = $env:CODEX_LOG
+            EZO_CODEX_ANNOUNCER = $env:EZO_CODEX_ANNOUNCER
+            EZO_CODEX_BETA_BUILDS = $env:EZO_CODEX_BETA_BUILDS
+            EZO_CODEX_DOWNLOADS = $env:EZO_CODEX_DOWNLOADS
+            EZO_CODEX_RELEASES = $env:EZO_CODEX_RELEASES
+            EZO_CODEX_STATUS = $env:EZO_CODEX_STATUS
+          }
+
+          foreach ($entry in $webhooks.GetEnumerator()) {
+            if ([string]::IsNullOrWhiteSpace($entry.Value)) {
+              Write-Host "$($entry.Key): missing"
+              continue
+            }
+
+            $uri = $entry.Value -replace "\?.*$", ""
+            $info = Invoke-RestMethod -Uri $uri -Method Get
+            Write-Host "$($entry.Key): channel_id=$($info.channel_id) guild_id=$($info.guild_id) webhook_name=$($info.name)"
+          }
