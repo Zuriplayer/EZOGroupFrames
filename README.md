@@ -3,7 +3,7 @@
 EZOGroupFrames is a public beta addon for The Elder Scrolls Online that provides compact, optional group frames for dungeon and trial groups.
 
 ¿Prefieres español? Lee el [README en español](README.es.md).
-Support, bug reports and suggestions: https://discord.gg/MpVCJ9h4Gk
+Support, bug reports and suggestions: https://discord.gg/ekw8zUAcRm
 
 ## Status
 
