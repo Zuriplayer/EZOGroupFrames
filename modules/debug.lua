@@ -14,23 +14,28 @@ function MOD.EnsureLogger()
     if MOD.logger then
         return MOD.logger
     end
+    if MOD.loggerUnavailable == true then
+        return nil
+    end
+
+    local lib = _G.LibDebugLogger
+    if type(lib) ~= "function" and type(lib) ~= "table" then
+        MOD.loggerUnavailable = true
+        return nil
+    end
 
     local ok, logger = pcall(function()
-        if not LibDebugLogger then
-            return nil
-        end
-
         local created = nil
-        local debugLevel = type(LibDebugLogger) == "table" and LibDebugLogger.LOG_LEVEL_DEBUG or nil
+        local debugLevel = type(lib) == "table" and lib.LOG_LEVEL_DEBUG or nil
 
-        if type(LibDebugLogger) == "function" then
-            created = LibDebugLogger(LOGGER_TAG)
-        elseif type(LibDebugLogger) == "table" then
-            local directOk, directLogger = pcall(LibDebugLogger, LOGGER_TAG)
+        if type(lib) == "function" then
+            created = lib(LOGGER_TAG)
+        elseif type(lib) == "table" then
+            local directOk, directLogger = pcall(lib, LOGGER_TAG)
             if directOk then
                 created = directLogger
-            elseif type(LibDebugLogger.Create) == "function" then
-                created = LibDebugLogger:Create(LOGGER_TAG)
+            elseif type(lib.Create) == "function" then
+                created = lib:Create(LOGGER_TAG)
             end
         end
 
@@ -49,23 +54,29 @@ function MOD.EnsureLogger()
 
     if ok and logger then
         MOD.logger = logger
+        MOD.loggerUnavailable = false
+    else
+        MOD.loggerUnavailable = true
     end
 
     return MOD.logger
 end
 
 function MOD.Init()
-    MOD.EnsureLogger()
+    if IsEnabled() then
+        MOD.EnsureLogger()
+    end
 end
 
 function MOD.ShowViewer()
-    if DebugLogViewer then
-        if type(DebugLogViewer.ShowWindow) == "function" then
-            DebugLogViewer.ShowWindow()
+    local viewer = _G.DebugLogViewer
+    if viewer then
+        if type(viewer.ShowWindow) == "function" then
+            viewer.ShowWindow()
             return true
         end
-        if type(DebugLogViewer.ToggleWindow) == "function" then
-            DebugLogViewer.ToggleWindow()
+        if type(viewer.ToggleWindow) == "function" then
+            viewer.ToggleWindow()
             return true
         end
     end
