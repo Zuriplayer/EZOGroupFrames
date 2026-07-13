@@ -9,6 +9,7 @@ Estas ideas quedan aparcadas para cuando se pidan propuestas o roadmap. No son s
 - Sustitucion de frames vanilla solo si existe setting explicito.
 - Guardar perfiles por trial o tipo de contenido.
 - Asimilar escudos/absorciones activos sobre la salud y estados similares que ayuden a leer supervivencia real.
+- Avisar de miembros sin comida activa o con comida al limite, si la API permite detectarlo de forma fiable.
 - Alternative Group Frame instalado localmente puede servir como referencia secundaria de comportamiento: rol LFG, capas de shield/trauma y opciones de iconos, sin convertirlo en dependencia.
 
 ## "Ya veremos donde"
