@@ -11,8 +11,8 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 ## Version Metadata
 
-- Addon version: `0.1.6`
-- AddOnVersion: `106`
+- Addon version: `0.1.7`
+- AddOnVersion: `107`
 - APIVersion: `101049 101050`
 - Status: public beta
 
@@ -51,6 +51,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Frame scale setting.
 - Optional "show only while grouped" behavior.
 - Optional hiding of ESO's native group-frame container while EZOGroupFrames is actively showing its own frames.
+  This uses ESO's own group/raid frame hidden-reason mechanism when available.
 - HUD-only visibility for the persistent frame panel.
 - English and Spanish localization with an in-addon language selector.
 - Debug mode with compact messages routed through LibDebugLogger when available.
@@ -110,6 +111,7 @@ The addon manifest loads the current runtime in this order:
 - The addon does not synchronize data between players.
 - The addon does not include a minimap, compass marker system, raid-leader marking system or per-trial saved marks in the current beta.
 - Native ESO group frames are hidden only while EZOGroupFrames is actively showing its own frames, and that behavior can be disabled in settings.
+  The addon does not directly force-hide the native group frame container when ESO's hidden-reason API is available.
 - Persistent visual controls are intended to be visible only in ESO HUD/HUD UI scenes.
 
 ## Recommended Testing
@@ -130,6 +132,7 @@ For beta testing, please verify:
 - Optional level and class text can be toggled.
 - The debug simulated group appears only when debug mode is enabled.
 - ESO native group frames return when EZOGroupFrames is disabled or not showing.
+- With native-frame hiding enabled, switching between keyboard and gamepad mode does not raise native unit-frame errors.
 - The UI is checked in keyboard and gamepad modes.
 
 ## License

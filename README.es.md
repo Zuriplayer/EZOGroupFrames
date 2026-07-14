@@ -11,8 +11,8 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 ## Metadatos de versión
 
-- Versión del addon: `0.1.6`
-- AddOnVersion: `106`
+- Versión del addon: `0.1.7`
+- AddOnVersion: `107`
 - APIVersion: `101049 101050`
 - Estado: beta pública
 
@@ -51,6 +51,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Ajuste de escala de los frames.
 - Comportamiento opcional de mostrar solo estando en grupo.
 - Ocultación opcional del contenedor nativo de frames de grupo de ESO mientras EZOGroupFrames muestra activamente sus propios frames.
+  Usa el mecanismo propio de ESO de motivos de ocultación de frames de grupo/raid cuando está disponible.
 - Visibilidad HUD-only para el panel persistente de frames.
 - Localización en inglés y español con selector de idioma dentro del addon.
 - Modo debug con mensajes compactos enviados mediante LibDebugLogger cuando está disponible.
@@ -110,6 +111,7 @@ El manifiesto del addon carga el runtime actual en este orden:
 - El addon no sincroniza datos entre jugadores.
 - El addon no incluye minimapa, sistema de marcas de brújula, sistema de marcas de raid leader ni marcas guardadas por trial en la beta actual.
 - Los frames nativos de grupo de ESO solo se ocultan mientras EZOGroupFrames muestra activamente sus propios frames, y ese comportamiento puede desactivarse en configuración.
+  El addon no fuerza directamente la ocultación del contenedor nativo cuando la API de motivos de ocultación de ESO está disponible.
 - Los controles visuales persistentes están pensados para mostrarse solo en escenas HUD/HUD UI de ESO.
 
 ## Pruebas Recomendadas
@@ -130,6 +132,7 @@ Para probar la beta, revisa:
 - El texto opcional de nivel y clase puede activarse y desactivarse.
 - El grupo simulado de debug aparece solo cuando el modo debug está activo.
 - Los frames nativos de ESO vuelven cuando EZOGroupFrames está desactivado o no se está mostrando.
+- Con la ocultación de frames nativos activa, cambiar entre modo teclado y modo gamepad no genera errores nativos de unit frames.
 - La UI se comprueba en modo teclado y modo gamepad.
 
 ## Licencia

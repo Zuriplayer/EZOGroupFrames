@@ -116,7 +116,7 @@ function ADDON.RegisterWithEZOCore()
             id = "ezogroupframes",
             name = ADDON.ADDON_NAME or "EZOGroupFrames",
             version = ADDON.ADDON_VERSION or "0.0.0",
-            addOnVersion = 105,
+            addOnVersion = 107,
             apiVersion = 1,
             capabilities = {
                 "family.language.consumer",

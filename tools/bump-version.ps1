@@ -77,6 +77,7 @@ function Test-ApiVersionList {
 }
 
 $manifest = Join-Path $root "EZOGroupFrames.txt"
+$main = Join-Path $root "EZOGroupFrames.lua"
 $core = Join-Path $root "modules\core.lua"
 $metadata = Join-Path $root "ezo-addon.json"
 
@@ -84,12 +85,14 @@ if (-not (Test-Path -LiteralPath $manifest)) { throw "Manifest not found: $manif
 if (-not (Test-Path -LiteralPath $core)) { throw "Core version file not found: $core" }
 
 $manifestText = Read-Text $manifest
+$mainText = Test-Path -LiteralPath $main | ForEach-Object { if ($_) { Read-Text $main } else { $null } }
 $coreText = Read-Text $core
 $metadataText = Test-Path -LiteralPath $metadata | ForEach-Object { if ($_) { Read-Text $metadata } else { $null } }
 
 $manifestVersion = Get-RegexValue $manifestText '^## Version:\s*(.+?)\s*$'
 $manifestAddOnVersion = Get-RegexValue $manifestText '^## AddOnVersion:\s*(\d+)\s*$'
 $manifestApiVersion = Get-RegexValue $manifestText '^## APIVersion:\s*(.+?)\s*$'
+$mainAddOnVersion = if ($mainText) { Get-RegexValue $mainText '^\s*addOnVersion\s*=\s*(\d+),\s*$' } else { $null }
 $coreVersion = Get-RegexValue $coreText '^\s*EZOGroupFrames\.ADDON_VERSION\s*=\s*"([^"]+)"\s*$'
 
 if ($Check) {
@@ -100,6 +103,10 @@ if ($Check) {
     }
     if (-not $manifestAddOnVersion) {
         Write-Error "Missing ## AddOnVersion in EZOGroupFrames.txt"
+        $ok = $false
+    }
+    if ($mainText -and $mainAddOnVersion -and $mainAddOnVersion -ne $manifestAddOnVersion) {
+        Write-Error "AddOnVersion mismatch: EZOGroupFrames.lua=$mainAddOnVersion EZOGroupFrames.txt=$manifestAddOnVersion"
         $ok = $false
     }
     $manifestApiTokens = Get-ApiVersionTokens $manifestApiVersion
@@ -154,6 +161,11 @@ if ($ApiVersion) {
     $manifestText = Set-RegexValue $manifestText '^(## APIVersion:\s*).+?(\s*)$' $ApiVersion
 }
 Write-Text $manifest $manifestText
+
+if ($mainText) {
+    $mainText = Set-RegexValue $mainText '^(\s*addOnVersion\s*=\s*)\d+(,\s*)$' ([string]$AddOnVersion)
+    Write-Text $main $mainText
+}
 
 $coreText = Set-RegexValue $coreText '^(\s*EZOGroupFrames\.ADDON_VERSION\s*=\s*")[^"]+("\s*)$' $Version
 Write-Text $core $coreText

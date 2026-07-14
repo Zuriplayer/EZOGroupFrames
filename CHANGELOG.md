@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.7 - Native Frame Hiding
+
+- Replaced direct hiding of ESO's native group-frame container with ESO's group/raid frame hidden-reason API when available.
+- Kept a defensive fallback for clients where the native hidden-reason API is unavailable.
+- Avoided repeated native-frame visibility writes when the requested hidden state has not changed.
+- Synchronized EZOCore registration metadata with the manifest AddOnVersion.
+
 ## 0.1.6 - EZOCore settings integration
 
 - Registered the complete settings panel in Settings > EZO when EZOCore is available.
