@@ -3,6 +3,20 @@ EZOGroupFrames_LAM = EZOGroupFrames_LAM or {}
 local REG = EZOGroupFrames_LAM
 REG._sections = REG._sections or {}
 
+local INFO_HEADER_TEXTURE = "EsoUI/Art/Miscellaneous/help_icon.dds"
+
+function REG.CreateInfoHeader(name, tooltip)
+    return {
+        type = "header",
+        name = zo_strformat(
+            "<<1>> |cB040FF|t26:26:<<2>>:inheritcolor|t|r",
+            tostring(name or ""),
+            INFO_HEADER_TEXTURE
+        ),
+        tooltip = tooltip,
+    }
+end
+
 function REG.RegisterSection(name, order, provider)
     REG._sections[name] = { order = order or 100, provider = provider }
 end
@@ -54,21 +68,41 @@ local function RegisterBaseSections()
     REG.RegisterSection("general", 1, function()
         local addon = EZOGroupFrames
         return {
-            { type = "header", name = GetString(EZO_GF_MENU_GENERAL) },
+            REG.CreateInfoHeader(GetString(EZO_GF_MENU_GENERAL), GetString(EZO_GF_MENU_GENERAL_TOOLTIP)),
             {
                 type = "dropdown",
                 name = GetString(EZO_GF_OPTION_LANGUAGE),
                 tooltip = GetString(EZO_GF_OPTION_LANGUAGE_TOOLTIP),
-                choices = { GetString(EZO_GF_OPTION_LANGUAGE_AUTO), "English", "Espanol" },
+                choices = {
+                    GetString(EZO_GF_OPTION_LANGUAGE_AUTO),
+                    "English",
+                    "Español",
+                },
                 choicesValues = { "auto", "en", "es" },
-                getFunc = function() return addon.sv.general.language or "auto" end,
+                getFunc = function()
+                    local value = addon.sv.general.language
+                        or (addon.GetDefaultLanguage and addon.GetDefaultLanguage())
+                        or "auto"
+                    if value == "inherit" then value = "auto" end
+                    return value
+                end,
                 setFunc = function(value)
-                    addon.sv.general.language = tostring(value or "auto")
-                    if EZOGroupFrames_Lang and EZOGroupFrames_Lang.Apply then
+                    addon.sv.general.language = tostring(
+                        value or (addon.GetDefaultLanguage and addon.GetDefaultLanguage()) or "auto"
+                    )
+                    if addon.sv.general.language == "inherit" then
+                        addon.sv.general.language = "auto"
+                    end
+                    if addon.ApplyLanguagePreference then
+                        addon.ApplyLanguagePreference(addon.sv.general.language)
+                    elseif EZOGroupFrames_Lang and EZOGroupFrames_Lang.Apply then
                         EZOGroupFrames_Lang.Apply(addon.sv.general.language)
                     end
                 end,
-                default = "auto",
+                disabled = function()
+                    return addon.IsLanguageManagedByEZOCore and addon.IsLanguageManagedByEZOCore()
+                end,
+                default = (addon.GetDefaultLanguage and addon.GetDefaultLanguage()) or "auto",
                 width = "half",
             },
         }
@@ -77,7 +111,7 @@ local function RegisterBaseSections()
     REG.RegisterSection("frames", 10, function()
         local addon = EZOGroupFrames
         return {
-            { type = "header", name = GetString(EZO_GF_MENU_FRAMES) },
+            REG.CreateInfoHeader(GetString(EZO_GF_MENU_FRAMES), GetString(EZO_GF_MENU_FRAMES_TOOLTIP)),
             {
                 type = "checkbox",
                 name = GetString(EZO_GF_OPTION_FRAMES_ENABLE),
@@ -89,6 +123,7 @@ local function RegisterBaseSections()
             {
                 type = "checkbox",
                 name = GetString(EZO_GF_OPTION_FRAMES_LOCK),
+                tooltip = GetString(EZO_GF_OPTION_FRAMES_LOCK_TOOLTIP),
                 getFunc = function() return addon.sv.frames.locked ~= false end,
                 setFunc = function(value) addon.sv.frames.locked = value ~= false; RefreshFrames() end,
                 default = true,
@@ -96,6 +131,7 @@ local function RegisterBaseSections()
             {
                 type = "checkbox",
                 name = GetString(EZO_GF_OPTION_FRAMES_GROUP_ONLY),
+                tooltip = GetString(EZO_GF_OPTION_FRAMES_GROUP_ONLY_TOOLTIP),
                 getFunc = function() return addon.sv.frames.showOnlyInGroup ~= false end,
                 setFunc = function(value) addon.sv.frames.showOnlyInGroup = value ~= false; RefreshFrames() end,
                 default = true,
@@ -117,6 +153,7 @@ local function RegisterBaseSections()
             {
                 type = "checkbox",
                 name = GetString(EZO_GF_OPTION_SHOW_LEVEL),
+                tooltip = GetString(EZO_GF_OPTION_SHOW_LEVEL_TOOLTIP),
                 getFunc = function() return addon.sv.frames.showLevel == true end,
                 setFunc = function(value) addon.sv.frames.showLevel = value == true; RefreshFrames() end,
                 default = false,
@@ -124,6 +161,7 @@ local function RegisterBaseSections()
             {
                 type = "checkbox",
                 name = GetString(EZO_GF_OPTION_SHOW_CLASS),
+                tooltip = GetString(EZO_GF_OPTION_SHOW_CLASS_TOOLTIP),
                 getFunc = function() return addon.sv.frames.showClass == true end,
                 setFunc = function(value) addon.sv.frames.showClass = value == true; RefreshFrames() end,
                 default = false,
@@ -131,6 +169,7 @@ local function RegisterBaseSections()
             {
                 type = "slider",
                 name = GetString(EZO_GF_OPTION_FRAMES_SCALE),
+                tooltip = GetString(EZO_GF_OPTION_FRAMES_SCALE_TOOLTIP),
                 min = 0.7,
                 max = 1.6,
                 step = 0.05,
@@ -142,32 +181,50 @@ local function RegisterBaseSections()
             {
                 type = "colorpicker",
                 name = GetString(EZO_GF_OPTION_COLOR_TANK),
-                getFunc = function() return GetColor(addon.sv.frames, "tankColor", { r = 0.88, g = 0.28, b = 0.22, a = 1 }) end,
+                tooltip = GetString(EZO_GF_OPTION_COLOR_TANK_TOOLTIP),
+                getFunc = function()
+                    return GetColor(addon.sv.frames, "tankColor", { r = 0.88, g = 0.28, b = 0.22, a = 1 })
+                end,
                 setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "tankColor", r, g, b, a) end,
                 default = { r = 0.88, g = 0.28, b = 0.22, a = 1 },
             },
             {
                 type = "colorpicker",
                 name = GetString(EZO_GF_OPTION_COLOR_HEALER),
-                getFunc = function() return GetColor(addon.sv.frames, "healerColor", { r = 0.20, g = 0.78, b = 0.34, a = 1 }) end,
+                tooltip = GetString(EZO_GF_OPTION_COLOR_HEALER_TOOLTIP),
+                getFunc = function()
+                    return GetColor(addon.sv.frames, "healerColor", { r = 0.20, g = 0.78, b = 0.34, a = 1 })
+                end,
                 setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "healerColor", r, g, b, a) end,
                 default = { r = 0.20, g = 0.78, b = 0.34, a = 1 },
             },
             {
                 type = "colorpicker",
                 name = GetString(EZO_GF_OPTION_COLOR_DAMAGE),
-                getFunc = function() return GetColor(addon.sv.frames, "damageColor", { r = 0.32, g = 0.52, b = 1.0, a = 1 }) end,
+                tooltip = GetString(EZO_GF_OPTION_COLOR_DAMAGE_TOOLTIP),
+                getFunc = function()
+                    return GetColor(addon.sv.frames, "damageColor", { r = 0.32, g = 0.52, b = 1.0, a = 1 })
+                end,
                 setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "damageColor", r, g, b, a) end,
                 default = { r = 0.32, g = 0.52, b = 1.0, a = 1 },
             },
             {
                 type = "colorpicker",
                 name = GetString(EZO_GF_OPTION_COLOR_UNKNOWN),
-                getFunc = function() return GetColor(addon.sv.frames, "unknownColor", { r = 0.72, g = 0.72, b = 0.78, a = 1 }) end,
+                tooltip = GetString(EZO_GF_OPTION_COLOR_UNKNOWN_TOOLTIP),
+                getFunc = function()
+                    return GetColor(addon.sv.frames, "unknownColor", { r = 0.72, g = 0.72, b = 0.78, a = 1 })
+                end,
                 setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "unknownColor", r, g, b, a) end,
                 default = { r = 0.72, g = 0.72, b = 0.78, a = 1 },
             },
-            { type = "header", name = GetString(EZO_GF_OPTION_DEBUG) },
+        }
+    end)
+
+    REG.RegisterSection("debug", 20, function()
+        local addon = EZOGroupFrames
+        return {
+            REG.CreateInfoHeader(GetString(EZO_GF_OPTION_DEBUG), GetString(EZO_GF_OPTION_DEBUG_TOOLTIP)),
             {
                 type = "checkbox",
                 name = GetString(EZO_GF_OPTION_DEBUG_MODE),

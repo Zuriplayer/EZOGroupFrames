@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.5 - Settings Presentation
+
+- Updated the LibAddonMenu panel to use shared EZO informational section headers.
+- Added purple 26 px information icons and section-level tooltips for General, Group frames and Debug.
+- Added field-specific tooltips for existing frame and color settings without changing defaults or behavior.
+- Kept English and Spanish public documentation synchronized with the settings presentation.
+
 ## 0.1.4 - Public Beta
 
 - Prepared the addon for public beta publication.

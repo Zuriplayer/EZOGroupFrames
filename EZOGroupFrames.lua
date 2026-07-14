@@ -1,10 +1,13 @@
 EZOGroupFrames = EZOGroupFrames or {}
 
 local ADDON = EZOGroupFrames
+local LANGUAGE_INHERIT = "inherit"
+local LANGUAGE_AUTO = "auto"
+local languageCallbackRegistered = false
 
 local DEFAULTS = {
     general = {
-        language = "auto",
+        language = LANGUAGE_AUTO,
         debug = false,
     },
     frames = {
@@ -37,6 +40,10 @@ local function DeepCopyDefaults(src)
 end
 
 function ADDON.GetDefaultLanguage()
+    return LANGUAGE_AUTO
+end
+
+function ADDON.GetClientLanguage()
     local lang = "en"
     if type(GetCVar) == "function" then
         lang = GetCVar("Language.2") or lang
@@ -45,10 +52,56 @@ function ADDON.GetDefaultLanguage()
 end
 
 function ADDON.GetEffectiveLanguage(lang)
+    if ADDON.IsLanguageManagedByEZOCore and ADDON.IsLanguageManagedByEZOCore() then
+        local ok, inherited = pcall(function()
+            return EZOCore:GetLanguage()
+        end)
+        if ok and (inherited == "es" or inherited == "en") then
+            return inherited
+        end
+    end
+    if lang == LANGUAGE_INHERIT then
+        lang = LANGUAGE_AUTO
+    end
     if lang == "en" or lang == "es" then
         return lang
     end
-    return ADDON.GetDefaultLanguage()
+    return ADDON.GetClientLanguage()
+end
+
+function ADDON.IsLanguageManagedByEZOCore()
+    if not (EZOCore and type(EZOCore.IsLanguageGloballyManaged) == "function") then
+        return false
+    end
+    local ok, managed = pcall(function()
+        return EZOCore:IsLanguageGloballyManaged()
+    end)
+    return ok and managed == true
+end
+
+function ADDON.ApplyLanguagePreference(lang)
+    if EZOGroupFrames_Lang and EZOGroupFrames_Lang.Apply then
+        EZOGroupFrames_Lang.Apply(lang or ADDON.GetDefaultLanguage())
+    end
+end
+
+function ADDON.RegisterEZOCoreLanguageCallback()
+    if languageCallbackRegistered
+        or not (EZOCore and type(EZOCore.RegisterCallback) == "function") then
+        return false
+    end
+
+    local eventName = EZOCore.EVENT_LANGUAGE_CHANGED or "EZO_CORE_LANGUAGE_CHANGED"
+    local ok, result = pcall(function()
+        return EZOCore:RegisterCallback(eventName, function()
+            if ADDON.sv and ADDON.sv.general then
+                ADDON.ApplyLanguagePreference(ADDON.sv.general.language or ADDON.GetDefaultLanguage())
+                ADDON.Refresh()
+            end
+        end)
+    end)
+    languageCallbackRegistered = ok and result == true
+    return languageCallbackRegistered
 end
 
 function ADDON.EnsureDefaults()
@@ -85,9 +138,8 @@ function ADDON.Initialize()
     ADDON.sv = ZO_SavedVars:NewAccountWide("EZOGroupFramesSV", 1, GetWorldName(), DEFAULTS)
     ADDON.EnsureDefaults()
 
-    if EZOGroupFrames_Lang and EZOGroupFrames_Lang.Apply then
-        EZOGroupFrames_Lang.Apply(ADDON.sv.general.language)
-    end
+    ADDON.ApplyLanguagePreference(ADDON.sv.general.language)
+    ADDON.RegisterEZOCoreLanguageCallback()
     if EZOGroupFrames_Menu and EZOGroupFrames_Menu.Init then
         EZOGroupFrames_Menu.Init()
     end

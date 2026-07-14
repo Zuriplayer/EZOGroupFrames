@@ -3,14 +3,15 @@
   "addon": {
     "id": "ezogroupframes",
     "name": "EZOGroupFrames",
-    "version": "0.1.4",
+    "version": "0.1.5",
+    "stage": "beta",
     "status": "beta",
     "phase": "public-beta",
     "visibility": "public",
     "manifest": "EZOGroupFrames.txt",
     "package": {
       "rootFolderName": "EZOGroupFrames",
-      "zipName": "EZOGroupFrames_v0.1.4.zip",
+      "zipName": "EZOGroupFrames_v0.1.5.zip",
       "outputPath": "dist",
       "include": [
         "*.txt",

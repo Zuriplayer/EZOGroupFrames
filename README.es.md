@@ -2,7 +2,7 @@
 
 EZOGroupFrames es un addon en beta pública para The Elder Scrolls Online que proporciona frames de grupo compactos y opcionales para grupos de mazmorra y trial.
 
-Prefer English? Read the [README in English](README.md).
+¿Prefieres inglés? Lee el [README en inglés](README.md).
 Soporte, errores y sugerencias: https://discord.gg/ekw8zUAcRm
 
 ## Estado
@@ -11,8 +11,8 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 ## Metadatos de versión
 
-- Versión del addon: `0.1.4`
-- AddOnVersion: `104`
+- Versión del addon: `0.1.5`
+- AddOnVersion: `105`
 - APIVersion: `101049 101050`
 - Estado: beta pública
 
@@ -58,6 +58,8 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 ## Configuración
 
 El addon añade un panel de LibAddonMenu llamado `EZOGroupFrames`.
+
+Cada sección de ajustes usa el icono informativo morado compartido de la familia EZO en su cabecera. Pasa el ratón sobre la cabecera de sección para ver la ayuda general de ese grupo de opciones; pasa el ratón sobre un ajuste concreto para ver su ayuda específica. El panel no mantiene párrafos explicativos largos visibles de forma permanente.
 
 Opciones generales:
 
@@ -116,6 +118,8 @@ Para probar la beta, revisa:
 - El addon carga sin errores Lua.
 - `/reloadui` funciona sin errores.
 - El panel de configuración de LibAddonMenu se abre.
+- Cada sección de ajustes muestra el icono informativo morado y expone su tooltip general desde la cabecera.
+- La ayuda específica aparece desde los controles individuales de cada ajuste.
 - La selección de idioma funciona en inglés y español.
 - Los frames propios aparecen en un grupo real.
 - El panel puede moverse cuando está desbloqueado y queda fijo cuando está bloqueado.
