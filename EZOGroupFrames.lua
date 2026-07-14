@@ -4,6 +4,7 @@ local ADDON = EZOGroupFrames
 local LANGUAGE_INHERIT = "inherit"
 local LANGUAGE_AUTO = "auto"
 local languageCallbackRegistered = false
+local ezocoreRegistered = false
 
 local DEFAULTS = {
     general = {
@@ -104,6 +105,32 @@ function ADDON.RegisterEZOCoreLanguageCallback()
     return languageCallbackRegistered
 end
 
+function ADDON.RegisterWithEZOCore()
+    if ezocoreRegistered
+        or not (EZOCore and type(EZOCore.RegisterAddon) == "function") then
+        return false
+    end
+
+    local ok, result = pcall(function()
+        return EZOCore:RegisterAddon({
+            id = "ezogroupframes",
+            name = ADDON.ADDON_NAME or "EZOGroupFrames",
+            version = ADDON.ADDON_VERSION or "0.0.0",
+            addOnVersion = 105,
+            apiVersion = 1,
+            capabilities = {
+                "family.language.consumer",
+                "family.settings.consumer",
+                "group.activityState.consumer",
+                "group.frames.visualHints",
+            },
+        })
+    end)
+
+    ezocoreRegistered = ok and result == true
+    return ezocoreRegistered
+end
+
 function ADDON.EnsureDefaults()
     ADDON.sv = ADDON.sv or {}
     for sectionName, defaults in pairs(DEFAULTS) do
@@ -140,6 +167,7 @@ function ADDON.Initialize()
 
     ADDON.ApplyLanguagePreference(ADDON.sv.general.language)
     ADDON.RegisterEZOCoreLanguageCallback()
+    ADDON.RegisterWithEZOCore()
     if EZOGroupFrames_Menu and EZOGroupFrames_Menu.Init then
         EZOGroupFrames_Menu.Init()
     end
