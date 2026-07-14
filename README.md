@@ -11,8 +11,8 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 ## Version Metadata
 
-- Addon version: `0.1.5`
-- AddOnVersion: `105`
+- Addon version: `0.1.6`
+- AddOnVersion: `106`
 - APIVersion: `101049 101050`
 - Status: public beta
 
@@ -20,6 +20,7 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 - The Elder Scrolls Online.
 - LibAddonMenu-2.0.
+- Optional: EZOCore for central access through Settings > EZO.
 - Optional for diagnostics: LibDebugLogger and DebugLogViewer.
 
 ## Installation
@@ -33,7 +34,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 
 3. Enable `EZOGroupFrames` from ESO's AddOns menu.
 4. Reload the UI.
-5. Open the addon settings from LibAddonMenu to review the frame options.
+5. With EZOCore enabled, open Settings > EZO > EZOGroupFrames. Without EZOCore, use the standard Addons settings panel.
 
 ## Current Features
 
@@ -57,7 +58,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 
 ## Settings
 
-The addon adds a LibAddonMenu panel named `EZOGroupFrames`.
+With EZOCore enabled, the complete panel appears only under Settings > EZO. Without EZOCore, the same controls remain available in the standard LibAddonMenu Addons list.
 
 Every settings section uses the shared EZO purple information icon in its heading. Hover the section heading for general help about that group of options; hover an individual setting for field-specific help. No long explanatory paragraphs are kept permanently visible in the panel.
 
@@ -117,7 +118,8 @@ For beta testing, please verify:
 
 - The addon loads without Lua errors.
 - `/reloadui` works without errors.
-- The LibAddonMenu settings panel opens.
+- The settings panel opens under Settings > EZO when EZOCore is enabled, without a duplicate entry in the standard Addons list.
+- The standalone LibAddonMenu fallback opens when EZOCore is unavailable.
 - Every settings section shows the purple information icon and exposes its general tooltip from the heading.
 - Field-specific help appears from the individual setting controls.
 - Language selection works in English and Spanish.

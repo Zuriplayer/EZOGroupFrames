@@ -1,8 +1,8 @@
 ## Title: E|cB040FFZ|rOGroupFrames
 ## Author: @Zuriplayer
 ## Description: EZO group frames for dungeon and trial groups.
-## Version: 0.1.5
-## AddOnVersion: 105
+## Version: 0.1.6
+## AddOnVersion: 106
 ## APIVersion: 101049 101050
 ## DependsOn: LibAddonMenu-2.0
 ## OptionalDependsOn: LibDebugLogger DebugLogViewer EZOCore

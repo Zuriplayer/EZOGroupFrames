@@ -1,6 +1,8 @@
 EZOGroupFrames_Menu = EZOGroupFrames_Menu or {}
 
 local MENU = EZOGroupFrames_Menu
+local ADDON_NAME = "EZOGroupFrames"
+local PANEL_ID = "EZOGroupFrames_Panel"
 
 local function BuildOptions()
     if EZOGroupFrames_LAM and EZOGroupFrames_LAM.GetSortedOptions then
@@ -17,17 +19,27 @@ function MENU.Init()
 
     local panelData = {
         type = "panel",
-        name = "EZOGroupFrames",
+        name = ADDON_NAME,
         displayName = "E|cB040FFZ|rOGroupFrames",
         author = EZOGroupFrames.AUTHOR,
         version = EZOGroupFrames.ADDON_VERSION,
+        ezoStage = "beta",
         registerForRefresh = true,
         registerForDefaults = true,
     }
 
-    local panel = LAM:RegisterAddonPanel("EZOGroupFrames_Panel", panelData)
+    local options = BuildOptions()
+    if EZOCore and type(EZOCore.RegisterSettingsPanel) == "function" then
+        local registered = EZOCore:RegisterSettingsPanel(ADDON_NAME, PANEL_ID, panelData, options)
+        if registered then
+            EZOGroupFrames.ezoSettingsRegistered = true
+            return
+        end
+    end
+
+    local panel = LAM:RegisterAddonPanel(PANEL_ID, panelData)
     EZOGroupFrames._lamPanel = panel
     _G.EZOGroupFrames_Panel = panel
 
-    LAM:RegisterOptionControls("EZOGroupFrames_Panel", BuildOptions())
+    LAM:RegisterOptionControls(PANEL_ID, options)
 end

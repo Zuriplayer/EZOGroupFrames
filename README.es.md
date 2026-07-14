@@ -11,8 +11,8 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 ## Metadatos de versión
 
-- Versión del addon: `0.1.5`
-- AddOnVersion: `105`
+- Versión del addon: `0.1.6`
+- AddOnVersion: `106`
 - APIVersion: `101049 101050`
 - Estado: beta pública
 
@@ -20,6 +20,7 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 - The Elder Scrolls Online.
 - LibAddonMenu-2.0.
+- Opcional: EZOCore para el acceso central desde Ajustes > EZO.
 - Opcional para diagnóstico: LibDebugLogger y DebugLogViewer.
 
 ## Instalación
@@ -33,7 +34,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 
 3. Activa `EZOGroupFrames` desde el menú de AddOns de ESO.
 4. Recarga la interfaz.
-5. Abre la configuración del addon desde LibAddonMenu para revisar las opciones de frames.
+5. Con EZOCore activo, abre Ajustes > EZO > EZOGroupFrames. Sin EZOCore, usa el panel estándar de ajustes de Addons.
 
 ## Funciones Actuales
 
@@ -57,7 +58,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 
 ## Configuración
 
-El addon añade un panel de LibAddonMenu llamado `EZOGroupFrames`.
+Con EZOCore activo, el panel completo aparece únicamente dentro de Ajustes > EZO. Sin EZOCore, los mismos controles siguen disponibles en la lista estándar de Addons de LibAddonMenu.
 
 Cada sección de ajustes usa el icono informativo morado compartido de la familia EZO en su cabecera. Pasa el ratón sobre la cabecera de sección para ver la ayuda general de ese grupo de opciones; pasa el ratón sobre un ajuste concreto para ver su ayuda específica. El panel no mantiene párrafos explicativos largos visibles de forma permanente.
 
@@ -117,7 +118,8 @@ Para probar la beta, revisa:
 
 - El addon carga sin errores Lua.
 - `/reloadui` funciona sin errores.
-- El panel de configuración de LibAddonMenu se abre.
+- El panel se abre dentro de Ajustes > EZO cuando EZOCore está activo, sin una entrada duplicada en la lista estándar de Addons.
+- El fallback independiente de LibAddonMenu se abre cuando EZOCore no está disponible.
 - Cada sección de ajustes muestra el icono informativo morado y expone su tooltip general desde la cabecera.
 - La ayuda específica aparece desde los controles individuales de cada ajuste.
 - La selección de idioma funciona en inglés y español.

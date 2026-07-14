@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.6 - EZOCore settings integration
+
+- Registered the complete settings panel in Settings > EZO when EZOCore is available.
+- Kept the standard LibAddonMenu panel only as a standalone fallback.
+
 ## 0.1.5 - Settings Presentation
 
 - Updated the LibAddonMenu panel to use shared EZO informational section headers.
