@@ -11,8 +11,8 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 ## Metadatos de versión
 
-- Versión del addon: `0.1.7`
-- AddOnVersion: `107`
+- Versión del addon: `0.1.8`
+- AddOnVersion: `108`
 - APIVersion: `101049 101050`
 - Estado: beta pública
 
@@ -48,6 +48,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Texto de nivel opcional.
 - Texto de clase opcional.
 - Panel movible cuando la posición de los frames está desbloqueada.
+- Integración temporal con el modo compartido de disposición de interfaz de EZOCore, sin cambiar la preferencia de bloqueo guardada.
 - Ajuste de escala de los frames.
 - Comportamiento opcional de mostrar solo estando en grupo.
 - Ocultación opcional del contenedor nativo de frames de grupo de ESO mientras EZOGroupFrames muestra activamente sus propios frames.
@@ -59,7 +60,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 
 ## Configuración
 
-Con EZOCore activo, el panel completo aparece únicamente dentro de Ajustes > EZO. Sin EZOCore, los mismos controles siguen disponibles en la lista estándar de Addons de LibAddonMenu.
+Con EZOCore activo, el panel completo aparece únicamente dentro de Ajustes > EZO y la superficie de frames puede participar en el modo global o individual de disposición de interfaz. Sin EZOCore, los mismos controles y el desbloqueo local siguen disponibles en la lista estándar de Addons de LibAddonMenu.
 
 Cada sección de ajustes usa el icono informativo morado compartido de la familia EZO en su cabecera. Pasa el ratón sobre la cabecera de sección para ver la ayuda general de ese grupo de opciones; pasa el ratón sobre un ajuste concreto para ver su ayuda específica. El panel no mantiene párrafos explicativos largos visibles de forma permanente.
 
@@ -127,6 +128,7 @@ Para probar la beta, revisa:
 - La selección de idioma funciona en inglés y español.
 - Los frames propios aparecen en un grupo real.
 - El panel puede moverse cuando está desbloqueado y queda fijo cuando está bloqueado.
+- El modo central muestra una previsualización movible solo al volver a HUD/HUD_UI y no altera el ajuste de bloqueo guardado.
 - Los valores de salud se actualizan cuando los miembros del grupo reciben daño o curación.
 - Los colores de rol se aplican a tanque, healer, DD y roles desconocidos.
 - El texto opcional de nivel y clase puede activarse y desactivarse.

@@ -11,8 +11,8 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 ## Version Metadata
 
-- Addon version: `0.1.7`
-- AddOnVersion: `107`
+- Addon version: `0.1.8`
+- AddOnVersion: `108`
 - APIVersion: `101049 101050`
 - Status: public beta
 
@@ -48,6 +48,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Optional level text.
 - Optional class text.
 - Movable panel when the frame position is unlocked.
+- Temporary integration with the shared EZOCore interface layout mode, without changing the saved lock preference.
 - Frame scale setting.
 - Optional "show only while grouped" behavior.
 - Optional hiding of ESO's native group-frame container while EZOGroupFrames is actively showing its own frames.
@@ -59,7 +60,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 
 ## Settings
 
-With EZOCore enabled, the complete panel appears only under Settings > EZO. Without EZOCore, the same controls remain available in the standard LibAddonMenu Addons list.
+With EZOCore enabled, the complete panel appears only under Settings > EZO and its group-frame surface can participate in the global or individual interface layout mode. Without EZOCore, the same controls and local unlock behavior remain available in the standard LibAddonMenu Addons list.
 
 Every settings section uses the shared EZO purple information icon in its heading. Hover the section heading for general help about that group of options; hover an individual setting for field-specific help. No long explanatory paragraphs are kept permanently visible in the panel.
 
@@ -127,6 +128,7 @@ For beta testing, please verify:
 - Language selection works in English and Spanish.
 - Custom frames appear in a real group.
 - The panel can be moved when unlocked and stays fixed when locked.
+- Central layout mode shows a movable preview only after returning to HUD/HUD_UI and does not alter the saved lock setting.
 - Health values update when group members take damage or heal.
 - Role colors apply to tank, healer, damage dealer and unknown roles.
 - Optional level and class text can be toggled.

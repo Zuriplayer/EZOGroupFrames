@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.8 - Shared Layout Integration
+
+- Registers the group-frame surface with EZOCore for temporary global or individual movement control.
+- Shows a HUD-only placement preview while either the central edit mode or the standalone unlock option is active.
+- Keeps native ESO frame hiding tied to functional custom-frame visibility rather than placement preview visibility.
+
 ## 0.1.7 - Native Frame Hiding
 
 - Replaced direct hiding of ESO's native group-frame container with ESO's group/raid frame hidden-reason API when available.

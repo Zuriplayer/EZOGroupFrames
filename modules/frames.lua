@@ -42,6 +42,20 @@ function FRAMES.IsShowing()
     return FRAMES.container and FRAMES.container:IsHidden() == false
 end
 
+function FRAMES.IsFunctionallyShowing()
+    return FRAMES.functionalVisible == true
+end
+
+function FRAMES.IsLayoutEditMode()
+    return FRAMES.layoutEditMode == true
+end
+
+function FRAMES.SetLayoutEditMode(enabled)
+    FRAMES.layoutEditMode = enabled == true
+    FRAMES.Refresh()
+    return FRAMES.layoutEditMode
+end
+
 local function GetRoleLabel(role)
     if role == LFG_ROLE_TANK then
         return GetString(EZO_GF_ROLE_TANK)
@@ -295,19 +309,26 @@ function FRAMES.Refresh()
         members = EZOGroupFrames_GroupState.GetMembers()
     end
 
-    local show = ShouldShow(members)
+    local functionalShow = ShouldShow(members)
+    FRAMES.functionalVisible = functionalShow
+    local settings = EZOGroupFrames.sv.frames
+    local isHudScene = not EZOGroupFrames_HudVisibility
+        or not EZOGroupFrames_HudVisibility.IsHudScene
+        or EZOGroupFrames_HudVisibility.IsHudScene()
+    local moveMode = isHudScene
+        and (FRAMES.layoutEditMode == true or settings.locked == false)
+    local show = functionalShow or moveMode
     FRAMES.container:SetHidden(not show)
     if EZOGroupFrames_NativeFrames and EZOGroupFrames_NativeFrames.ApplyVisibility then
-        EZOGroupFrames_NativeFrames.ApplyVisibility(show)
+        EZOGroupFrames_NativeFrames.ApplyVisibility(functionalShow)
     end
     if not show then
         return
     end
 
-    local settings = EZOGroupFrames.sv.frames
     FRAMES.container:SetScale(tonumber(settings.scale) or 1)
-    FRAMES.container:SetMovable(settings.locked == false)
-    FRAMES.container:SetMouseEnabled(settings.locked == false)
+    FRAMES.container:SetMovable(moveMode)
+    FRAMES.container:SetMouseEnabled(moveMode)
 
     for i = 1, MAX_ROWS do
         local row = FRAMES.rows[i]
@@ -325,6 +346,7 @@ function FRAMES.Refresh()
 end
 
 function FRAMES.Init()
+    FRAMES.layoutEditMode = false
     EnsureControls()
     FRAMES.Refresh()
 end

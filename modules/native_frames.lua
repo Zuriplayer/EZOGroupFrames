@@ -129,8 +129,8 @@ end
 
 function MOD.Refresh()
     local customFramesVisible = EZOGroupFrames_Frames
-        and EZOGroupFrames_Frames.IsShowing
-        and EZOGroupFrames_Frames.IsShowing()
+        and EZOGroupFrames_Frames.IsFunctionallyShowing
+        and EZOGroupFrames_Frames.IsFunctionallyShowing()
 
     MOD.ApplyVisibility(customFramesVisible == true)
 end

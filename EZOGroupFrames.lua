@@ -5,6 +5,7 @@ local LANGUAGE_INHERIT = "inherit"
 local LANGUAGE_AUTO = "auto"
 local languageCallbackRegistered = false
 local ezocoreRegistered = false
+local layoutSurfaceRegistered = false
 
 local DEFAULTS = {
     general = {
@@ -116,10 +117,11 @@ function ADDON.RegisterWithEZOCore()
             id = "ezogroupframes",
             name = ADDON.ADDON_NAME or "EZOGroupFrames",
             version = ADDON.ADDON_VERSION or "0.0.0",
-            addOnVersion = 107,
+            addOnVersion = 108,
             apiVersion = 1,
             capabilities = {
                 "family.language.consumer",
+                "family.layout.consumer",
                 "family.settings.consumer",
                 "group.activityState.consumer",
                 "group.frames.visualHints",
@@ -129,6 +131,38 @@ function ADDON.RegisterWithEZOCore()
 
     ezocoreRegistered = ok and result == true
     return ezocoreRegistered
+end
+
+function ADDON.RegisterLayoutWithEZOCore()
+    if layoutSurfaceRegistered
+        or not (EZOCore and type(EZOCore.GetService) == "function") then
+        return false
+    end
+
+    local service = EZOCore:GetService("family.layout", 1)
+    if not service or type(service.RegisterSurface) ~= "function" then
+        return false
+    end
+
+    local ok, result = pcall(function()
+        return service:RegisterSurface({
+            id = "ezogroupframes.frames",
+            addonId = "ezogroupframes",
+            addonName = "EZOGroupFrames",
+            name = function() return GetString(EZO_GF_MENU_FRAMES) end,
+            tooltip = function() return GetString(EZO_GF_MENU_FRAMES_TOOLTIP) end,
+            setEditMode = function(enabled)
+                EZOGroupFrames_Frames.SetLayoutEditMode(enabled)
+                return EZOGroupFrames_Frames.IsLayoutEditMode() == (enabled == true)
+            end,
+            isEditMode = function()
+                return EZOGroupFrames_Frames.IsLayoutEditMode()
+            end,
+        })
+    end)
+
+    layoutSurfaceRegistered = ok and result == true
+    return layoutSurfaceRegistered
 end
 
 function ADDON.EnsureDefaults()
@@ -183,6 +217,7 @@ function ADDON.Initialize()
     if EZOGroupFrames_Frames and EZOGroupFrames_Frames.Init then
         EZOGroupFrames_Frames.Init()
     end
+    ADDON.RegisterLayoutWithEZOCore()
 end
 
 local function OnAddOnLoaded(_, addonName)
