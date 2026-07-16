@@ -27,6 +27,13 @@ local DEFAULTS = {
         damageColor = { r = 0.32, g = 0.52, b = 1.0, a = 1.0 },
         unknownColor = { r = 0.72, g = 0.72, b = 0.78, a = 1.0 },
     },
+    ezoStatus = {
+        showPlayerStatus = false,
+        showPing = false,
+        showFps = false,
+        showPrivacy = false,
+        sharePerformance = false,
+    },
 }
 
 local function DeepCopyDefaults(src)
@@ -117,13 +124,15 @@ function ADDON.RegisterWithEZOCore()
             id = "ezogroupframes",
             name = ADDON.ADDON_NAME or "EZOGroupFrames",
             version = ADDON.ADDON_VERSION or "0.0.0",
-            addOnVersion = 108,
+            addOnVersion = 109,
             apiVersion = 1,
             capabilities = {
                 "family.language.consumer",
                 "family.layout.consumer",
                 "family.settings.consumer",
                 "group.activityState.consumer",
+                "group.performanceState.consumer",
+                "group.performanceState.provider",
                 "group.frames.visualHints",
             },
         })
@@ -210,6 +219,9 @@ function ADDON.Initialize()
     end
     if EZOGroupFrames_GroupState and EZOGroupFrames_GroupState.Init then
         EZOGroupFrames_GroupState.Init()
+    end
+    if EZOGroupFrames_EZOCorePerformance and EZOGroupFrames_EZOCorePerformance.Init then
+        EZOGroupFrames_EZOCorePerformance.Init()
     end
     if EZOGroupFrames_NativeFrames and EZOGroupFrames_NativeFrames.Init then
         EZOGroupFrames_NativeFrames.Init()

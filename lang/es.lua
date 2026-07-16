@@ -5,6 +5,9 @@ EZO_GROUP_FRAMES_STRINGS_ES = {
     EZO_GF_MENU_FRAMES_TOOLTIP = "Ajustes de visualización de los frames propios de grupo. " ..
         "Estos controles afectan al panel del addon, la ordenación por rol, la presentación de barras de salud " ..
         "y la ocultación opcional de los frames nativos.",
+    EZO_GF_MENU_EZO_STATUS = "Estado EZO de jugador",
+    EZO_GF_MENU_EZO_STATUS_TOOLTIP = "Estado opcional de jugador de la familia EZO mostrado en los frames compactos. " ..
+        "Los datos se consumen y comparten solo mediante presencia de grupo de EZOCore cuando los clientes compatibles los proporcionan.",
     EZO_GF_OPTION_LANGUAGE = "Idioma",
     EZO_GF_OPTION_LANGUAGE_TOOLTIP = "Idioma local usado cuando EZOCore no está instalado o su modo de idioma es 'dejar que cada addon elija'. Los idiomas centrales de EZOCore desactivan este selector.",
     EZO_GF_OPTION_LANGUAGE_AUTO = "Auto (cliente ESO)",
@@ -38,6 +41,18 @@ EZO_GROUP_FRAMES_STRINGS_ES = {
     EZO_GF_OPTION_COLOR_UNKNOWN = "Color de rol sin definir",
     EZO_GF_OPTION_COLOR_UNKNOWN_TOOLTIP = "Color usado cuando ESO no informa rol de tanque, healer o DD " ..
         "para un miembro.",
+    EZO_GF_OPTION_SHOW_EZO_STATUS = "Mostrar estado EZO de jugador en frames de grupo",
+    EZO_GF_OPTION_SHOW_EZO_STATUS_TOOLTIP = "Añade un texto compacto de estado EZO a cada fila de miembro cuando EZOCore " ..
+        "tiene estado compatible de ese jugador de grupo.",
+    EZO_GF_OPTION_SHOW_PING = "Mostrar ping",
+    EZO_GF_OPTION_SHOW_PING_TOOLTIP = "Muestra el ping recibido como texto compacto en milisegundos, por ejemplo 42ms.",
+    EZO_GF_OPTION_SHOW_FPS = "Mostrar FPS",
+    EZO_GF_OPTION_SHOW_FPS_TOOLTIP = "Muestra los frames por segundo recibidos como texto compacto, por ejemplo 58fps.",
+    EZO_GF_OPTION_SHOW_PRIVACY = "Mostrar indicador de privacidad",
+    EZO_GF_OPTION_SHOW_PRIVACY_TOOLTIP = "Muestra el estado compacto de privacidad recibido mediante EZOCore.",
+    EZO_GF_OPTION_SHARE_PERFORMANCE = "Compartir mi ping/FPS/privacidad",
+    EZO_GF_OPTION_SHARE_PERFORMANCE_TOOLTIP = "Cuando está activo, publica ping, FPS y privacidad locales redondeados " ..
+        "mediante presencia de grupo de EZOCore con intervalo limitado. EZOGroupFrames no registra tráfico propio de LibGroupBroadcast.",
     EZO_GF_OPTION_DEBUG = "Debug",
     EZO_GF_OPTION_DEBUG_TOOLTIP = "Herramientas de desarrollo y soporte. El debug sale por LibDebugLogger " ..
         "cuando está disponible y no debe usarse como flujo normal de juego.",
@@ -48,6 +63,10 @@ EZO_GROUP_FRAMES_STRINGS_ES = {
         "un healer y dos DD sin grupo real.",
     EZO_GF_STATUS_NOT_GROUPED = "Sin grupo",
     EZO_GF_STATUS_GROUP = "Grupo",
+    EZO_GF_PRIVACY_PUBLIC_SHORT = "PUB",
+    EZO_GF_PRIVACY_PRIVATE_SHORT = "PRV",
+    EZO_GF_PRIVACY_HIDDEN_SHORT = "OCU",
+    EZO_GF_PRIVACY_UNKNOWN_SHORT = "?",
     EZO_GF_ROLE_TANK = "Tanque",
     EZO_GF_ROLE_HEALER = "Healer",
     EZO_GF_ROLE_DAMAGE = "DD",

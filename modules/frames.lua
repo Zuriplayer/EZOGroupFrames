@@ -173,6 +173,13 @@ local function CreateRow(parent, index)
     row.percent:SetDimensions(66, 24)
     row.percent:SetHorizontalAlignment(TEXT_ALIGN_RIGHT)
 
+    row.ezoStatus = CreateLabel(row.barRoot, "ZoFontGameSmall")
+    row.ezoStatus:SetAnchor(RIGHT, row.percent, LEFT, -4, 0)
+    row.ezoStatus:SetDimensions(96, 24)
+    row.ezoStatus:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
+    row.ezoStatus:SetColor(0.82, 0.62, 1, 0.95)
+    row.ezoStatus:SetHidden(true)
+
     return row
 end
 
@@ -240,6 +247,17 @@ local function UpdateBar(row, member)
 
     row.value:SetText(string.format("%s / %s", FormatNumber(current), FormatNumber(maximum)))
     row.percent:SetText(string.format("%d%%", percent))
+
+    local ezoStatusText = ""
+    if EZOGroupFrames_EZOCorePerformance
+        and type(EZOGroupFrames_EZOCorePerformance.BuildDisplayText) == "function" then
+        ezoStatusText = EZOGroupFrames_EZOCorePerformance.BuildDisplayText(member.unitTag)
+    end
+    local hasEzoStatus = ezoStatusText ~= ""
+    row.ezoStatus:SetHidden(not hasEzoStatus)
+    row.ezoStatus:SetText(ezoStatusText)
+    row.value:SetDimensions(hasEzoStatus and 82 or 150, 24)
+    row.percent:SetDimensions(hasEzoStatus and 52 or 66, 24)
 end
 
 local function BuildDisplayName(member)
@@ -251,7 +269,7 @@ local function BuildDisplayName(member)
     if settings.showClass == true and member.classText and member.classText ~= "" then
         parts[#parts + 1] = member.classText
     end
-    return table.concat(parts, " ")
+    return table.concat(parts, " - ")
 end
 
 local function PositionRow(row, index)

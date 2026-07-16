@@ -11,8 +11,8 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 ## Version Metadata
 
-- Addon version: `0.1.8`
-- AddOnVersion: `108`
+- Addon version: `0.1.9`
+- AddOnVersion: `109`
 - APIVersion: `101049 101050`
 - Status: public beta
 
@@ -20,7 +20,7 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 - The Elder Scrolls Online.
 - LibAddonMenu-2.0.
-- Optional: EZOCore for central access through Settings > EZO.
+- Optional: EZOCore for central access through Settings > EZO and opt-in EZO player status in group frames.
 - Optional for diagnostics: LibDebugLogger and DebugLogViewer.
 
 ## Installation
@@ -45,14 +45,15 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Health bars using the current and maximum health values reported by ESO.
 - Health text with current/max health and a percentage label.
 - Configurable role colors for tank, healer, damage dealer and unknown role.
-- Optional level text.
-- Optional class text.
+- Optional level and class text, separated from the player name for readability.
 - Movable panel when the frame position is unlocked.
 - Temporary integration with the shared EZOCore interface layout mode, without changing the saved lock preference.
 - Frame scale setting.
 - Optional "show only while grouped" behavior.
 - Optional hiding of ESO's native group-frame container while EZOGroupFrames is actively showing its own frames.
   This uses ESO's own group/raid frame hidden-reason mechanism when available.
+- Optional EZO player status beside each group member, consumed through EZOCore group presence: ping as `42ms`, FPS as `58fps`, and a compact privacy badge.
+- Optional opt-in sharing of your rounded ping, FPS and privacy status through EZOCore group presence at a limited interval.
 - HUD-only visibility for the persistent frame panel.
 - English and Spanish localization with an in-addon language selector.
 - Debug mode with compact messages routed through LibDebugLogger when available.
@@ -82,6 +83,14 @@ Group frame options:
 - Damage color.
 - Unknown role color.
 
+EZO player status options:
+
+- Show EZO player status in group frames.
+- Show ping.
+- Show FPS.
+- Show privacy indicator.
+- Share my ping/FPS/privacy status.
+
 Debug options:
 
 - Enable debug mode.
@@ -98,6 +107,7 @@ The addon manifest loads the current runtime in this order:
 - `modules/hud_visibility.lua`: HUD/HUD UI visibility guard and scene fragment registration.
 - `modules/debug_simulation.lua`: debug-only simulated four-player group.
 - `modules/group_state.lua`: group member snapshot, role sorting, health, level and class text.
+- `modules/ezocore_performance.lua`: optional EZOCore `performanceState` producer/consumer bridge.
 - `modules/native_frames.lua`: optional hiding/restoring of ESO native group frames.
 - `modules/lam_registry.lua`: LibAddonMenu option registration.
 - `modules/menu.lua`: LibAddonMenu panel creation.
@@ -109,7 +119,8 @@ The addon manifest loads the current runtime in this order:
 - The addon does not invite, kick, promote, queue, ready-check or disband groups.
 - The addon does not change keybinds or input behavior.
 - The addon does not perform combat actions.
-- The addon does not synchronize data between players.
+- The addon does not own, register or handle LibGroupBroadcast protocols directly. Optional player status is consumed or shared only through the EZOCore service API.
+- Player status sharing is disabled by default and limited to rounded ping, FPS and privacy state.
 - The addon does not include a minimap, compass marker system, raid-leader marking system or per-trial saved marks in the current beta.
 - Native ESO group frames are hidden only while EZOGroupFrames is actively showing its own frames, and that behavior can be disabled in settings.
   The addon does not directly force-hide the native group frame container when ESO's hidden-reason API is available.
@@ -131,7 +142,10 @@ For beta testing, please verify:
 - Central layout mode shows a movable preview only after returning to HUD/HUD_UI and does not alter the saved lock setting.
 - Health values update when group members take damage or heal.
 - Role colors apply to tank, healer, damage dealer and unknown roles.
-- Optional level and class text can be toggled.
+- Optional level and class text can be toggled and remains separated from the player name.
+- With EZOCore group presence available on compatible grouped clients, enable EZO player status, ping, FPS and privacy display and confirm that compact status text appears without widening the frame rows.
+- Enable sharing on one client and confirm that updates are throttled and expire when the peer stops sharing or leaves group.
+- Repeat with EZOCore disabled to confirm that the EZO status controls do not create Lua errors and the frames continue to work locally.
 - The debug simulated group appears only when debug mode is enabled.
 - ESO native group frames return when EZOGroupFrames is disabled or not showing.
 - With native-frame hiding enabled, switching between keyboard and gamepad mode does not raise native unit-frame errors.

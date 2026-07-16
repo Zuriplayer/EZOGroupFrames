@@ -46,6 +46,14 @@ local function RefreshFrames()
     end
 end
 
+local function RefreshEzoStatus()
+    RefreshFrames()
+    if EZOGroupFrames_EZOCorePerformance
+        and type(EZOGroupFrames_EZOCorePerformance.RefreshPublisher) == "function" then
+        EZOGroupFrames_EZOCorePerformance.RefreshPublisher()
+    end
+end
+
 local function GetColor(settings, key, fallback)
     local color = settings[key]
     if type(color) ~= "table" then
@@ -217,6 +225,62 @@ local function RegisterBaseSections()
                 end,
                 setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "unknownColor", r, g, b, a) end,
                 default = { r = 0.72, g = 0.72, b = 0.78, a = 1 },
+            },
+        }
+    end)
+
+    REG.RegisterSection("ezoStatus", 15, function()
+        local addon = EZOGroupFrames
+        return {
+            REG.CreateInfoHeader(GetString(EZO_GF_MENU_EZO_STATUS), GetString(EZO_GF_MENU_EZO_STATUS_TOOLTIP)),
+            {
+                type = "checkbox",
+                name = GetString(EZO_GF_OPTION_SHOW_EZO_STATUS),
+                tooltip = GetString(EZO_GF_OPTION_SHOW_EZO_STATUS_TOOLTIP),
+                getFunc = function() return addon.sv.ezoStatus.showPlayerStatus == true end,
+                setFunc = function(value)
+                    addon.sv.ezoStatus.showPlayerStatus = value == true
+                    RefreshEzoStatus()
+                end,
+                default = false,
+            },
+            {
+                type = "checkbox",
+                name = GetString(EZO_GF_OPTION_SHOW_PING),
+                tooltip = GetString(EZO_GF_OPTION_SHOW_PING_TOOLTIP),
+                getFunc = function() return addon.sv.ezoStatus.showPing == true end,
+                setFunc = function(value) addon.sv.ezoStatus.showPing = value == true; RefreshEzoStatus() end,
+                disabled = function() return addon.sv.ezoStatus.showPlayerStatus ~= true end,
+                default = false,
+            },
+            {
+                type = "checkbox",
+                name = GetString(EZO_GF_OPTION_SHOW_FPS),
+                tooltip = GetString(EZO_GF_OPTION_SHOW_FPS_TOOLTIP),
+                getFunc = function() return addon.sv.ezoStatus.showFps == true end,
+                setFunc = function(value) addon.sv.ezoStatus.showFps = value == true; RefreshEzoStatus() end,
+                disabled = function() return addon.sv.ezoStatus.showPlayerStatus ~= true end,
+                default = false,
+            },
+            {
+                type = "checkbox",
+                name = GetString(EZO_GF_OPTION_SHOW_PRIVACY),
+                tooltip = GetString(EZO_GF_OPTION_SHOW_PRIVACY_TOOLTIP),
+                getFunc = function() return addon.sv.ezoStatus.showPrivacy == true end,
+                setFunc = function(value) addon.sv.ezoStatus.showPrivacy = value == true; RefreshEzoStatus() end,
+                disabled = function() return addon.sv.ezoStatus.showPlayerStatus ~= true end,
+                default = false,
+            },
+            {
+                type = "checkbox",
+                name = GetString(EZO_GF_OPTION_SHARE_PERFORMANCE),
+                tooltip = GetString(EZO_GF_OPTION_SHARE_PERFORMANCE_TOOLTIP),
+                getFunc = function() return addon.sv.ezoStatus.sharePerformance == true end,
+                setFunc = function(value)
+                    addon.sv.ezoStatus.sharePerformance = value == true
+                    RefreshEzoStatus()
+                end,
+                default = false,
             },
         }
     end)

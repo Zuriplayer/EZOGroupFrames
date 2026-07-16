@@ -10,6 +10,8 @@ Estas ideas quedan aparcadas para cuando se pidan propuestas o roadmap. No son s
 - Guardar perfiles por trial o tipo de contenido.
 - Asimilar escudos/absorciones activos sobre la salud y estados similares que ayuden a leer supervivencia real.
 - Avisar de miembros sin comida activa o con comida al limite, si la API permite detectarlo de forma fiable.
+- Indicador de dano total de grupo, si los datos disponibles permiten calcularlo de forma fiable y sin coste excesivo.
+- Indicador de porcentaje de dano por jugador dentro del grupo, si los datos disponibles permiten calcularlo de forma fiable y sin coste excesivo.
 - Alternative Group Frame instalado localmente puede servir como referencia secundaria de comportamiento: rol LFG, capas de shield/trauma y opciones de iconos, sin convertirlo en dependencia.
 
 ## "Ya veremos donde"

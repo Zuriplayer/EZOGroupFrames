@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.9 - EZOCore Player Status
+
+- Added disabled-by-default settings for optional EZO player status in group frames.
+- Consumes EZOCore `performanceState` data to show compact ping, FPS and privacy status beside group members.
+- Added opt-in local ping/FPS/privacy publishing through the EZOCore group presence service at a limited interval.
+- Separated optional player name, level and class text with clear delimiters above the health bar.
+- Kept EZOGroupFrames free of direct LibGroupBroadcast protocol ownership, handlers or custom group events.
+
 ## 0.1.8 - Shared Layout Integration
 
 - Registers the group-frame surface with EZOCore for temporary global or individual movement control.
