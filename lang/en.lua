@@ -15,7 +15,7 @@ EZO_GROUP_FRAMES_STRINGS_EN = {
         "ESO native group frames are controlled separately by the native-frame hiding option.",
     EZO_GF_OPTION_FRAMES_LOCK = "Lock frame position",
     EZO_GF_OPTION_FRAMES_LOCK_TOOLTIP = "When locked, the custom frame panel cannot be dragged. " ..
-        "Unlock it to move the panel and save its position.",
+        "Unlock it and drag with the left mouse button to save its position.",
     EZO_GF_OPTION_FRAMES_SCALE = "Frame scale",
     EZO_GF_OPTION_FRAMES_SCALE_TOOLTIP = "Adjusts the size of the custom group-frame panel " ..
         "without changing its saved position.",
@@ -50,7 +50,8 @@ EZO_GROUP_FRAMES_STRINGS_EN = {
     EZO_GF_OPTION_SHOW_PRIVACY_TOOLTIP = "Shows the compact privacy state received through EZOCore.",
     EZO_GF_OPTION_SHARE_PERFORMANCE = "Share my ping/FPS/privacy status",
     EZO_GF_OPTION_SHARE_PERFORMANCE_TOOLTIP = "When enabled, publishes rounded local ping, FPS and privacy status " ..
-        "through EZOCore group presence at a limited interval. EZOGroupFrames does not register LibGroupBroadcast traffic itself.",
+        "through EZOCore group presence at a limited interval. Disabling it immediately queues a hidden-state withdrawal. " ..
+        "This option requires the EZOCore group transport to be active.",
     EZO_GF_OPTION_DEBUG = "Debug",
     EZO_GF_OPTION_DEBUG_TOOLTIP = "Development and support tools. Debug output is routed through LibDebugLogger " ..
         "when available and should not be used as a normal gameplay flow.",

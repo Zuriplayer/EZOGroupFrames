@@ -16,7 +16,7 @@ EZO_GROUP_FRAMES_STRINGS_ES = {
         "Los frames nativos de ESO se controlan por separado con la opción de ocultación nativa.",
     EZO_GF_OPTION_FRAMES_LOCK = "Bloquear posición",
     EZO_GF_OPTION_FRAMES_LOCK_TOOLTIP = "Cuando está bloqueado, el panel propio de frames no se puede arrastrar. " ..
-        "Desbloquéalo para mover el panel y guardar su posición.",
+        "Desbloquéalo y arrástralo con el botón izquierdo para guardar su posición.",
     EZO_GF_OPTION_FRAMES_SCALE = "Escala de frames",
     EZO_GF_OPTION_FRAMES_SCALE_TOOLTIP = "Ajusta el tamaño del panel propio de frames de grupo " ..
         "sin cambiar su posición guardada.",
@@ -52,7 +52,8 @@ EZO_GROUP_FRAMES_STRINGS_ES = {
     EZO_GF_OPTION_SHOW_PRIVACY_TOOLTIP = "Muestra el estado compacto de privacidad recibido mediante EZOCore.",
     EZO_GF_OPTION_SHARE_PERFORMANCE = "Compartir mi ping/FPS/privacidad",
     EZO_GF_OPTION_SHARE_PERFORMANCE_TOOLTIP = "Cuando está activo, publica ping, FPS y privacidad locales redondeados " ..
-        "mediante presencia de grupo de EZOCore con intervalo limitado. EZOGroupFrames no registra tráfico propio de LibGroupBroadcast.",
+        "mediante presencia de grupo de EZOCore con intervalo limitado. Al desactivarlo encola inmediatamente una retirada con estado oculto. " ..
+        "Esta opción requiere que el transporte de grupo de EZOCore esté activo.",
     EZO_GF_OPTION_DEBUG = "Debug",
     EZO_GF_OPTION_DEBUG_TOOLTIP = "Herramientas de desarrollo y soporte. El debug sale por LibDebugLogger " ..
         "cuando está disponible y no debe usarse como flujo normal de juego.",

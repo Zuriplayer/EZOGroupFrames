@@ -11,6 +11,9 @@ local ROW_HEIGHT = 42
 local BLOCK_GAP = 18
 local ROW_GAP = 6
 local TEXT_INSET = 12
+local CONTAINER_NAME = "EZOGroupFrames_Container"
+local ROW_NAME_PREFIX = "EZOGroupFrames_Row"
+local LEADER_ICON_TEXTURE = "EsoUI/Art/Icons/MapKey/mapkey_groupleader.dds"
 local CONSUMED_BAR_COLOR = { 0.20, 0.20, 0.22, 0.88 }
 local FILL_SHEEN_COLOR = { 1.0, 1.0, 1.0, 0.12 }
 local INNER_SHADE_COLOR = { 0, 0, 0, 0.16 }
@@ -56,19 +59,6 @@ function FRAMES.SetLayoutEditMode(enabled)
     return FRAMES.layoutEditMode
 end
 
-local function GetRoleLabel(role)
-    if role == LFG_ROLE_TANK then
-        return GetString(EZO_GF_ROLE_TANK)
-    end
-    if role == LFG_ROLE_HEAL then
-        return GetString(EZO_GF_ROLE_HEALER)
-    end
-    if role == LFG_ROLE_DPS then
-        return GetString(EZO_GF_ROLE_DAMAGE)
-    end
-    return GetString(EZO_GF_ROLE_UNKNOWN)
-end
-
 local function GetRoleColor(role)
     local settings = EZOGroupFrames.sv.frames
     local color = settings.unknownColor
@@ -83,6 +73,19 @@ local function GetRoleColor(role)
         return 0.72, 0.72, 0.78, 1
     end
     return color.r or 1, color.g or 1, color.b or 1, color.a or 1
+end
+
+local function GetRoleIcon(role)
+    if role == LFG_ROLE_TANK then
+        return "EsoUI/Art/LFG/Gamepad/lfg_roleicon_tank.dds"
+    end
+    if role == LFG_ROLE_HEAL then
+        return "EsoUI/Art/LFG/Gamepad/lfg_roleicon_healer.dds"
+    end
+    if role == LFG_ROLE_DPS then
+        return "EsoUI/Art/LFG/Gamepad/lfg_roleicon_dps.dds"
+    end
+    return nil
 end
 
 local function FormatNumber(value)
@@ -136,8 +139,42 @@ local function CreateFlatTexture(parent, color)
     return texture
 end
 
-local function CreateRow(parent, index)
-    local row = WINDOW_MANAGER:CreateControl("EZOGroupFrames_Row" .. tostring(index), parent, CT_CONTROL)
+local function SetOverlayDrawOrder(control, level)
+    if not control then
+        return
+    end
+    if type(control.SetDrawTier) == "function" and DT_HIGH then
+        control:SetDrawTier(DT_HIGH)
+    end
+    if type(control.SetDrawLayer) == "function" and DL_OVERLAY then
+        control:SetDrawLayer(DL_OVERLAY)
+    end
+    if type(control.SetDrawLevel) == "function" then
+        control:SetDrawLevel(level or 5)
+    end
+end
+
+local function GetNamedControl(name)
+    if _G and _G[name] then
+        return _G[name]
+    end
+    if WINDOW_MANAGER and type(WINDOW_MANAGER.GetControlByName) == "function" then
+        return WINDOW_MANAGER:GetControlByName(name)
+    end
+    return nil
+end
+
+local function CreateRow(parent, index, anonymousName)
+    local controlName = anonymousName and nil or ROW_NAME_PREFIX .. tostring(index)
+    local row = WINDOW_MANAGER:CreateControl(controlName, parent, CT_CONTROL)
+    local rowName = row:GetName()
+    if rowName == "" then
+        rowName = nil
+    end
+    local function ChildName(suffix)
+        return rowName and rowName .. suffix or nil
+    end
+
     row:SetDimensions(ROW_WIDTH, ROW_HEIGHT)
 
     row.name = CreateLabel(row, "ZoFontGameSmall")
@@ -145,23 +182,42 @@ local function CreateRow(parent, index)
     row.name:SetDimensions(172, 17)
     row.name:SetHorizontalAlignment(TEXT_ALIGN_LEFT)
 
-    row.role = CreateLabel(row, "ZoFontGameSmall")
-    row.role:SetAnchor(TOPRIGHT, row, TOPRIGHT, -8, 0)
-    row.role:SetDimensions(72, 17)
-    row.role:SetHorizontalAlignment(TEXT_ALIGN_RIGHT)
+    row.roleIcon = WINDOW_MANAGER:CreateControl(nil, row, CT_TEXTURE)
+    row.roleIcon:SetAnchor(TOPRIGHT, row, TOPRIGHT, -8, 0)
+    row.roleIcon:SetDimensions(18, 18)
+    row.roleIcon:SetMouseEnabled(false)
+    row.roleIcon:SetHidden(true)
 
     row.barRoot = WINDOW_MANAGER:CreateControl(nil, row, CT_CONTROL)
     row.barRoot:SetAnchor(BOTTOMLEFT, row, BOTTOMLEFT, 0, 0)
     row.barRoot:SetDimensions(ROW_WIDTH, 24)
 
-    row.consumed = CreateStatusBar(row:GetName() .. "_Consumed", row.barRoot)
-    row.fill = CreateStatusBar(row:GetName() .. "_Fill", row.barRoot)
-    row.sheen = CreateStatusBar(row:GetName() .. "_Sheen", row.barRoot)
+    row.consumed = CreateStatusBar(ChildName("_Consumed"), row.barRoot)
+    row.fill = CreateStatusBar(ChildName("_Fill"), row.barRoot)
+    row.sheen = CreateStatusBar(ChildName("_Sheen"), row.barRoot)
     row.shade = CreateFlatTexture(row.barRoot, INNER_SHADE_COLOR)
     row.consumedLeftCap = CreateCap(row.barRoot, true)
     row.consumedRightCap = CreateCap(row.barRoot, false)
     row.fillLeftCap = CreateCap(row.barRoot, true)
     row.fillRightCap = CreateCap(row.barRoot, false)
+
+    row.leaderIconBack = WINDOW_MANAGER:CreateControl(nil, row, CT_TEXTURE)
+    row.leaderIconBack:SetAnchor(LEFT, row.barRoot, LEFT, 4, 0)
+    row.leaderIconBack:SetDimensions(24, 20)
+    row.leaderIconBack:SetTexture("EsoUI/Art/Miscellaneous/progressbar_genericfill.dds")
+    row.leaderIconBack:SetColor(0, 0, 0, 0.62)
+    row.leaderIconBack:SetMouseEnabled(false)
+    row.leaderIconBack:SetHidden(true)
+    SetOverlayDrawOrder(row.leaderIconBack, 8)
+
+    row.leaderIcon = WINDOW_MANAGER:CreateControl(nil, row, CT_TEXTURE)
+    row.leaderIcon:SetAnchor(CENTER, row.leaderIconBack, CENTER, 0, 0)
+    row.leaderIcon:SetDimensions(20, 20)
+    row.leaderIcon:SetTexture(LEADER_ICON_TEXTURE)
+    row.leaderIcon:SetColor(1, 0.92, 0.22, 1)
+    row.leaderIcon:SetMouseEnabled(false)
+    row.leaderIcon:SetHidden(true)
+    SetOverlayDrawOrder(row.leaderIcon, 9)
 
     row.value = CreateLabel(row.barRoot, "ZoFontGameSmall")
     row.value:SetAnchor(LEFT, row.barRoot, LEFT, TEXT_INSET, 0)
@@ -181,6 +237,33 @@ local function CreateRow(parent, index)
     row.ezoStatus:SetHidden(true)
 
     return row
+end
+
+local function HasCompleteRow(row)
+    return row
+        and row.name
+        and row.roleIcon
+        and row.barRoot
+        and row.consumed
+        and row.fill
+        and row.sheen
+        and row.shade
+        and row.leaderIconBack
+        and row.leaderIcon
+        and row.value
+        and row.percent
+        and row.ezoStatus
+end
+
+local function AttachOrCreateRow(parent, index)
+    local row = GetNamedControl(ROW_NAME_PREFIX .. tostring(index))
+    if HasCompleteRow(row) then
+        return row
+    end
+    if row and type(row.SetHidden) == "function" then
+        row:SetHidden(true)
+    end
+    return CreateRow(parent, index, row ~= nil)
 end
 
 local function ApplyBarStyle(row)
@@ -213,6 +296,10 @@ local function ApplyBarStyle(row)
 end
 
 local function UpdateBar(row, member)
+    if not HasCompleteRow(row) or not member then
+        return
+    end
+
     local current = tonumber(member.currentHealth) or 0
     local maximum = tonumber(member.maxHealth) or 0
     local percent = tonumber(member.healthPercent) or 0
@@ -248,6 +335,10 @@ local function UpdateBar(row, member)
     row.value:SetText(string.format("%s / %s", FormatNumber(current), FormatNumber(maximum)))
     row.percent:SetText(string.format("%d%%", percent))
 
+    local isLeader = member.isLeader == true
+    row.leaderIconBack:SetHidden(not isLeader)
+    row.leaderIcon:SetHidden(not isLeader)
+
     local ezoStatusText = ""
     if EZOGroupFrames_EZOCorePerformance
         and type(EZOGroupFrames_EZOCorePerformance.BuildDisplayText) == "function" then
@@ -256,7 +347,9 @@ local function UpdateBar(row, member)
     local hasEzoStatus = ezoStatusText ~= ""
     row.ezoStatus:SetHidden(not hasEzoStatus)
     row.ezoStatus:SetText(ezoStatusText)
-    row.value:SetDimensions(hasEzoStatus and 82 or 150, 24)
+    row.value:ClearAnchors()
+    row.value:SetAnchor(LEFT, row.barRoot, LEFT, isLeader and 34 or TEXT_INSET, 0)
+    row.value:SetDimensions(hasEzoStatus and (isLeader and 60 or 82) or (isLeader and 128 or 150), 24)
     row.percent:SetDimensions(hasEzoStatus and 52 or 66, 24)
 end
 
@@ -282,26 +375,52 @@ local function PositionRow(row, index)
 end
 
 local function EnsureControls()
-    if FRAMES.container then
+    if FRAMES.container and FRAMES.rows then
         return
     end
 
-    local container = WINDOW_MANAGER:CreateTopLevelWindow("EZOGroupFrames_Container")
+    local container = GetNamedControl(CONTAINER_NAME)
+    if not container then
+        container = WINDOW_MANAGER:CreateTopLevelWindow(CONTAINER_NAME)
+    end
+    if not container then
+        return
+    end
     container:SetDimensions((ROW_WIDTH * 3) + (BLOCK_GAP * 2), 212)
     local settings = EZOGroupFrames.sv and EZOGroupFrames.sv.frames or {}
+    container:ClearAnchors()
     container:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, settings.x or 260, settings.y or 260)
-    container:SetMovable(true)
+    container:SetMovable(false)
     container:SetMouseEnabled(true)
     container:SetClampedToScreen(true)
     container:SetHidden(true)
+    container:SetHandler("OnMouseDown", function(control, button)
+        if button ~= MOUSE_BUTTON_INDEX_LEFT or FRAMES.moveEnabled ~= true then
+            return
+        end
+        FRAMES.dragActive = true
+        control:SetMovable(true)
+        control:StartMoving()
+    end)
+    container:SetHandler("OnMouseUp", function(control, button)
+        if button ~= MOUSE_BUTTON_INDEX_LEFT or FRAMES.dragActive ~= true then
+            return
+        end
+        control:StopMovingOrResizing()
+        FRAMES.dragActive = false
+        control:SetMovable(false)
+    end)
     container:SetHandler("OnMoveStop", function(control)
+        FRAMES.dragActive = false
+        control:SetMovable(false)
         if EZOGroupFrames and EZOGroupFrames.sv and EZOGroupFrames.sv.frames then
             EZOGroupFrames.sv.frames.x = zo_floor(control:GetLeft())
             EZOGroupFrames.sv.frames.y = zo_floor(control:GetTop())
         end
     end)
 
-    container.title = WINDOW_MANAGER:CreateControl(nil, container, CT_LABEL)
+    container.title = container.title or WINDOW_MANAGER:CreateControl(nil, container, CT_LABEL)
+    container.title:ClearAnchors()
     container.title:SetAnchor(TOPLEFT, container, TOPLEFT, 0, 0)
     container.title:SetFont("ZoFontGameSmall")
     container.title:SetColor(0.8, 0.6, 1, 1)
@@ -310,17 +429,21 @@ local function EnsureControls()
     FRAMES.container = container
     FRAMES.rows = {}
     for i = 1, MAX_ROWS do
-        FRAMES.rows[i] = CreateRow(container, i)
+        FRAMES.rows[i] = AttachOrCreateRow(container, i)
         ApplyBarStyle(FRAMES.rows[i])
     end
 
-    if EZOGroupFrames_HudVisibility and EZOGroupFrames_HudVisibility.Register then
+    if not FRAMES.hudRegistered and EZOGroupFrames_HudVisibility and EZOGroupFrames_HudVisibility.Register then
         EZOGroupFrames_HudVisibility.Register(container, FRAMES.Refresh)
+        FRAMES.hudRegistered = true
     end
 end
 
 function FRAMES.Refresh()
     EnsureControls()
+    if not FRAMES.container or not FRAMES.rows then
+        return
+    end
 
     local members = {}
     if EZOGroupFrames_GroupState and EZOGroupFrames_GroupState.GetMembers then
@@ -335,6 +458,11 @@ function FRAMES.Refresh()
         or EZOGroupFrames_HudVisibility.IsHudScene()
     local moveMode = isHudScene
         and (FRAMES.layoutEditMode == true or settings.locked == false)
+    FRAMES.moveEnabled = moveMode
+    if FRAMES.dragActive and not moveMode then
+        FRAMES.container:StopMovingOrResizing()
+        FRAMES.dragActive = false
+    end
     local show = functionalShow or moveMode
     FRAMES.container:SetHidden(not show)
     if EZOGroupFrames_NativeFrames and EZOGroupFrames_NativeFrames.ApplyVisibility then
@@ -345,7 +473,7 @@ function FRAMES.Refresh()
     end
 
     FRAMES.container:SetScale(tonumber(settings.scale) or 1)
-    FRAMES.container:SetMovable(moveMode)
+    FRAMES.container:SetMovable(false)
     FRAMES.container:SetMouseEnabled(moveMode)
 
     for i = 1, MAX_ROWS do
@@ -355,9 +483,15 @@ function FRAMES.Refresh()
         PositionRow(row, i)
         if member then
             local r, g, b = GetRoleColor(member.role)
+            local roleIcon = GetRoleIcon(member.role)
             row.name:SetText(BuildDisplayName(member))
-            row.role:SetText(GetRoleLabel(member.role))
-            row.role:SetColor(r, g, b, 1)
+            if roleIcon then
+                row.roleIcon:SetTexture(roleIcon)
+                row.roleIcon:SetColor(r, g, b, 1)
+                row.roleIcon:SetHidden(false)
+            else
+                row.roleIcon:SetHidden(true)
+            end
             UpdateBar(row, member)
         end
     end

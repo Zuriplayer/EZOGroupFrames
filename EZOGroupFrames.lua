@@ -6,6 +6,7 @@ local LANGUAGE_AUTO = "auto"
 local languageCallbackRegistered = false
 local ezocoreRegistered = false
 local layoutSurfaceRegistered = false
+local debugControllerRegistered = false
 
 local DEFAULTS = {
     general = {
@@ -124,10 +125,11 @@ function ADDON.RegisterWithEZOCore()
             id = "ezogroupframes",
             name = ADDON.ADDON_NAME or "EZOGroupFrames",
             version = ADDON.ADDON_VERSION or "0.0.0",
-            addOnVersion = 109,
+            addOnVersion = 115,
             apiVersion = 1,
             capabilities = {
                 "family.language.consumer",
+                "family.debug.controller",
                 "family.layout.consumer",
                 "family.settings.consumer",
                 "group.activityState.consumer",
@@ -140,6 +142,52 @@ function ADDON.RegisterWithEZOCore()
 
     ezocoreRegistered = ok and result == true
     return ezocoreRegistered
+end
+
+function ADDON.SetDebugModeEnabled(enabled)
+    if not (ADDON.sv and ADDON.sv.general) then
+        return false
+    end
+
+    ADDON.sv.general.debug = enabled == true
+    if not ADDON.sv.general.debug
+        and EZOGroupFrames_DebugSimulation
+        and EZOGroupFrames_DebugSimulation.IsActive
+        and EZOGroupFrames_DebugSimulation.IsActive()
+    then
+        EZOGroupFrames_DebugSimulation.SetActive(false)
+    end
+    return ADDON.sv.general.debug == (enabled == true)
+end
+
+function ADDON.RegisterDebugWithEZOCore()
+    if debugControllerRegistered
+        or not (EZOCore and type(EZOCore.GetService) == "function") then
+        return false
+    end
+
+    local service = EZOCore:GetService("family.debug", 1)
+    if not service or type(service.RegisterController) ~= "function" then
+        return false
+    end
+
+    local ok, result = pcall(function()
+        return service:RegisterController({
+            id = "ezogroupframes.debug",
+            addonId = "ezogroupframes",
+            addonName = "EZOGroupFrames",
+            name = function() return GetString(EZO_GF_OPTION_DEBUG_MODE) end,
+            isEnabled = function()
+                return ADDON.sv and ADDON.sv.general and ADDON.sv.general.debug == true
+            end,
+            setEnabled = function(enabled)
+                return ADDON.SetDebugModeEnabled(enabled == true)
+            end,
+        })
+    end)
+
+    debugControllerRegistered = ok and result == true
+    return debugControllerRegistered
 end
 
 function ADDON.RegisterLayoutWithEZOCore()
@@ -211,6 +259,7 @@ function ADDON.Initialize()
     ADDON.ApplyLanguagePreference(ADDON.sv.general.language)
     ADDON.RegisterEZOCoreLanguageCallback()
     ADDON.RegisterWithEZOCore()
+    ADDON.RegisterDebugWithEZOCore()
     if EZOGroupFrames_Menu and EZOGroupFrames_Menu.Init then
         EZOGroupFrames_Menu.Init()
     end

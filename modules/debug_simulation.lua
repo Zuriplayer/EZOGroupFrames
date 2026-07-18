@@ -21,7 +21,7 @@ local function IsDebugEnabled()
         and EZOGroupFrames.sv.general.debug == true
 end
 
-local function BuildMember(index, role, name, currentHealth, maxHealth, levelText, classText)
+local function BuildMember(index, role, name, currentHealth, maxHealth, levelText, classText, isLeader)
     local percent = 0
     if maxHealth > 0 then
         percent = zo_floor((currentHealth / maxHealth) * 100)
@@ -36,6 +36,7 @@ local function BuildMember(index, role, name, currentHealth, maxHealth, levelTex
         currentHealth = currentHealth,
         maxHealth = maxHealth,
         healthPercent = percent,
+        isLeader = isLeader == true,
         simulated = true,
     }
 end
@@ -76,7 +77,7 @@ function MOD.GetMembers()
     end
 
     return {
-        BuildMember(1, RoleTank(), "EZO Tank", 48000, 52000, "CP2200", "DK"),
+        BuildMember(1, RoleTank(), "EZO Tank", 48000, 52000, "CP2200", "DK", true),
         BuildMember(2, RoleHealer(), "EZO Healer", 28600, 32000, "CP1800", "Templar"),
         BuildMember(3, RoleDamage(), "EZO DD One", 21400, 28000, "CP1600", "Arcanista"),
         BuildMember(4, RoleDamage(), "EZO DD Two", 25200, 30000, "CP1900", "NB"),

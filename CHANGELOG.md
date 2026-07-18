@@ -1,5 +1,47 @@
 # Changelog
 
+## 0.1.15 - Leader Crown Overlay
+
+- Draws the group leader crown as a high-layer overlay anchored to the health bar so the bar fill and caps cannot cover it.
+
+## 0.1.14 - Role Icons and Status Warnings
+
+- Replaces role text with native ESO role icons for tank, healer and damage dealer.
+- Keeps the group leader crown inside the health bar while still showing the member's role icon.
+- Highlights optional EZO status values when they become unfavorable: ping from 150 ms in yellow and 250 ms in red; FPS at 45 or lower in yellow and 30 or lower in red.
+- Keeps role icon, leader detection, performance sharing and saved settings behavior unchanged.
+
+## 0.1.13 - Leader Icon Contrast
+
+- Replaces the group leader marker with a clearer crown-style group leader icon.
+- Adds a compact dark backing behind the leader icon so it remains visible over bright role-colored health bars.
+- Keeps the leader detection and saved settings unchanged.
+
+## 0.1.12 - Group Leader Indicator
+
+- Shows a compact crown icon on the group leader's custom health bar.
+- Tracks leader changes through ESO's group leader update event.
+- Marks the simulated debug tank as leader so the indicator can be tested outside a real group.
+
+## 0.1.11 - Performance Status Privacy
+
+- Immediately queues a hidden-state withdrawal when optional performance sharing is disabled.
+- Shows ping and FPS only for explicitly public peer states instead of rendering private values as zero.
+- Delays initial and group-change publishing until EZOCore presence has been queued first.
+- Reports distinct performance publish and receive state transitions through Log Viewer when debug is enabled.
+- Prevents enabling performance sharing while the EZOCore group transport is unavailable.
+- Avoids network publication attempts while the optional transport is inactive and resumes automatically when it returns.
+- Clamps local performance samples to the limits of the shared wire contract.
+
+## 0.1.10 - Native Style Refresh Safety
+
+- Force-restores ESO's native group/raid frame visibility before keyboard/gamepad style refreshes.
+- Prevents stale addon visibility state from leaving native group-frame anchors unavailable during `UpdateGroupFramesVisualStyle`.
+- Reapplies the configured native-frame hiding only after the platform-style transition completes.
+- Registers debug logging and simulation with EZOCore for family-wide disable control.
+- Avoids unsupported mouse-button initialization on the custom group-frame panel while preserving locked/unlocked movement behavior.
+- Reuses an existing custom frame container if refresh events reach the renderer before the local frame registry is attached.
+
 ## 0.1.9 - EZOCore Player Status
 
 - Added disabled-by-default settings for optional EZO player status in group frames.

@@ -11,8 +11,8 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 ## Metadatos de versión
 
-- Versión del addon: `0.1.9`
-- AddOnVersion: `109`
+- Versión del addon: `0.1.15`
+- AddOnVersion: `115`
 - APIVersion: `101049 101050`
 - Estado: beta pública
 
@@ -41,9 +41,10 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Panel propio de frames de grupo para grupos de mazmorra y trial.
 - Miembros mostrados en bloques de cuatro.
 - Miembros del grupo ordenados por rol LFG seleccionado y después por nombre.
-- Etiquetas de rol para tanque, healer, DD y rol desconocido.
+- Iconos nativos de ESO para los roles de tanque, healer y DD.
 - Barras de salud usando los valores de salud actual y máxima indicados por ESO.
 - Texto de salud con salud actual/máxima y una etiqueta de porcentaje.
+- Icono de corona de alto contraste del líder de grupo en la barra de salud del líder.
 - Colores de rol configurables para tanque, healer, DD y rol desconocido.
 - Texto opcional de nivel y clase, separado del nombre del jugador para mejorar la legibilidad.
 - Panel movible cuando la posición de los frames está desbloqueada.
@@ -53,7 +54,9 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Ocultación opcional del contenedor nativo de frames de grupo de ESO mientras EZOGroupFrames muestra activamente sus propios frames.
   Usa el mecanismo propio de ESO de motivos de ocultación de frames de grupo/raid cuando está disponible.
 - Estado EZO de jugador opcional junto a cada miembro del grupo, consumido mediante presencia de grupo de EZOCore: ping como `42ms`, FPS como `58fps` y una insignia compacta de privacidad.
-- Compartición opcional y expresa de tu ping, FPS y privacidad redondeados mediante presencia de grupo de EZOCore con intervalo limitado.
+- Colores de aviso opcionales para el estado EZO: el ping pasa a amarillo desde `150ms` y a rojo desde `250ms`; los FPS pasan a amarillo con `45fps` o menos y a rojo con `30fps` o menos.
+- Compartición opcional y expresa de tu ping, FPS y estado público de privacidad redondeados mediante presencia de grupo de EZOCore con intervalo limitado.
+- Al desactivar la compartición se encola inmediatamente una retirada con estado oculto; los pares privados u ocultos nunca muestran ping o FPS con valor cero como si fueran métricas reales.
 - Visibilidad HUD-only para el panel persistente de frames.
 - Localización en inglés y español con selector de idioma dentro del addon.
 - Modo debug con mensajes compactos enviados mediante LibDebugLogger cuando está disponible.
@@ -106,7 +109,7 @@ El manifiesto del addon carga el runtime actual en este orden:
 - `modules/debug.lua`: integración con LibDebugLogger y DebugLogViewer.
 - `modules/hud_visibility.lua`: guarda de visibilidad HUD/HUD UI y registro de fragmento de escena.
 - `modules/debug_simulation.lua`: grupo simulado de cuatro jugadores solo para debug.
-- `modules/group_state.lua`: snapshot de miembros del grupo, ordenación por rol, salud, nivel y texto de clase.
+- `modules/group_state.lua`: snapshot de miembros del grupo, ordenación por rol, estado de líder, salud, nivel y texto de clase.
 - `modules/ezocore_performance.lua`: puente opcional productor/consumidor de `performanceState` de EZOCore.
 - `modules/native_frames.lua`: ocultación/restauración opcional de los frames nativos de grupo de ESO.
 - `modules/lam_registry.lua`: registro de opciones de LibAddonMenu.
@@ -120,7 +123,8 @@ El manifiesto del addon carga el runtime actual en este orden:
 - El addon no cambia atajos de teclado ni comportamiento de entrada.
 - El addon no realiza acciones de combate.
 - El addon no es propietario, no registra y no maneja directamente protocolos de LibGroupBroadcast. El estado opcional de jugador se consume o comparte solo mediante la API de servicio de EZOCore.
-- La compartición de estado de jugador está desactivada por defecto y se limita a ping, FPS y privacidad redondeados.
+- La compartición de estado de jugador está desactivada por defecto y se limita a ping, FPS y privacidad redondeados. Solo puede activarse mientras el transporte de grupo de EZOCore está operativo.
+- Los resultados del transporte de rendimiento y los primeros estados recibidos de cada par se escriben en Log Viewer únicamente cuando el debug del addon está activo.
 - El addon no incluye minimapa, sistema de marcas de brújula, sistema de marcas de raid leader ni marcas guardadas por trial en la beta actual.
 - Los frames nativos de grupo de ESO solo se ocultan mientras EZOGroupFrames muestra activamente sus propios frames, y ese comportamiento puede desactivarse en configuración.
   El addon no fuerza directamente la ocultación del contenedor nativo cuando la API de motivos de ocultación de ESO está disponible.
@@ -141,10 +145,12 @@ Para probar la beta, revisa:
 - El panel puede moverse cuando está desbloqueado y queda fijo cuando está bloqueado.
 - El modo central muestra una previsualización movible solo al volver a HUD/HUD_UI y no altera el ajuste de bloqueo guardado.
 - Los valores de salud se actualizan cuando los miembros del grupo reciben daño o curación.
-- Los colores de rol se aplican a tanque, healer, DD y roles desconocidos.
+- El líder del grupo aparece marcado con un icono de corona legible en la barra de salud.
+- Los iconos nativos de rol aparecen para tanque, healer y DD, y los colores de rol siguen aplicándose a los iconos y las barras.
 - El texto opcional de nivel y clase puede activarse y desactivarse, y permanece separado del nombre del jugador.
 - Con presencia de grupo de EZOCore disponible en clientes compatibles agrupados, activa estado EZO de jugador, ping, FPS y privacidad y comprueba que el texto compacto aparezca sin ensanchar las filas.
-- Activa la compartición en un cliente y comprueba que las actualizaciones estén limitadas y caduquen cuando el par deje de compartir o salga del grupo.
+- Comprueba que el ping alto y los FPS bajos cambian a amarillo o rojo en los umbrales documentados.
+- Activa la compartición en un cliente y comprueba que las actualizaciones estén limitadas; después desactívala y confirma que el par cambia a oculto sin mostrar `0ms` ni `0fps`.
 - Repite con EZOCore desactivado para confirmar que los controles de estado EZO no generan errores Lua y los frames siguen funcionando localmente.
 - El grupo simulado de debug aparece solo cuando el modo debug está activo.
 - Los frames nativos de ESO vuelven cuando EZOGroupFrames está desactivado o no se está mostrando.

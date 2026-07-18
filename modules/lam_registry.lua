@@ -280,6 +280,14 @@ local function RegisterBaseSections()
                     addon.sv.ezoStatus.sharePerformance = value == true
                     RefreshEzoStatus()
                 end,
+                disabled = function()
+                    if addon.sv.ezoStatus.sharePerformance == true then
+                        return false
+                    end
+                    return EZOGroupFrames_EZOCorePerformance
+                        and type(EZOGroupFrames_EZOCorePerformance.IsTransportActive) == "function"
+                        and not EZOGroupFrames_EZOCorePerformance.IsTransportActive()
+                end,
                 default = false,
             },
         }
@@ -295,14 +303,7 @@ local function RegisterBaseSections()
                 tooltip = GetString(EZO_GF_OPTION_DEBUG_MODE_TOOLTIP),
                 getFunc = function() return addon.sv.general.debug == true end,
                 setFunc = function(value)
-                    addon.sv.general.debug = value == true
-                    if addon.sv.general.debug ~= true
-                        and EZOGroupFrames_DebugSimulation
-                        and EZOGroupFrames_DebugSimulation.IsActive
-                        and EZOGroupFrames_DebugSimulation.IsActive()
-                    then
-                        EZOGroupFrames_DebugSimulation.SetActive(false)
-                    end
+                    addon.SetDebugModeEnabled(value == true)
                 end,
                 default = false,
             },

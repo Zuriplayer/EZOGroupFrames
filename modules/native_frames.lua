@@ -37,15 +37,16 @@ local function SetNativeHiddenFallback(hidden)
     end
 end
 
-local function SetNativeHidden(hidden)
+local function SetNativeHidden(hidden, force)
     hidden = hidden == true
-    if MOD.nativeHidden == hidden then
+    if force ~= true and MOD.nativeHidden == hidden then
         return
     end
 
     if UNIT_FRAMES and type(UNIT_FRAMES.SetGroupAndRaidFramesHiddenForReason) == "function" then
         UNIT_FRAMES:SetGroupAndRaidFramesHiddenForReason(HIDDEN_REASON, hidden)
         MOD.nativeHidden = hidden
+        MOD.touched = true
         return
     end
 
@@ -77,12 +78,22 @@ local function RestoreNativeForStyleRefresh()
     MOD.styleRefreshGeneration = (MOD.styleRefreshGeneration or 0) + 1
     MOD.suspendNativeHiding = true
 
-    if MOD.nativeHidden or MOD.hiddenByAddon then
-        SetNativeHidden(false)
-        MOD.hiddenByAddon = false
-    end
+    -- The ESO style refresh reads native group-frame anchors immediately. Clear
+    -- our hidden reason even if the local cache has drifted from UNIT_FRAMES.
+    SetNativeHidden(false, true)
+    MOD.hiddenByAddon = false
 
     ScheduleResumeAfterStyleRefresh(MOD.styleRefreshGeneration)
+end
+
+local function MayManageNativeFrames()
+    return MOD.nativeHidden == true
+        or MOD.hiddenByAddon == true
+        or MOD.touched == true
+        or (EZOGroupFrames
+            and EZOGroupFrames.sv
+            and EZOGroupFrames.sv.frames
+            and EZOGroupFrames.sv.frames.hideNativeWhenActive ~= false)
 end
 
 local function InstallPlatformStylePreHook()
@@ -97,7 +108,7 @@ local function InstallPlatformStylePreHook()
     end
 
     ZO_PreHook(ZO_PlatformStyle, "Apply", function()
-        if MOD.nativeHidden or MOD.hiddenByAddon then
+        if MayManageNativeFrames() then
             RestoreNativeForStyleRefresh()
         end
         return false

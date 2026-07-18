@@ -53,6 +53,10 @@ local function GetRoleSort(role)
     return ROLE_SORT[role] or 4
 end
 
+local function IsLeader(unitTag)
+    return type(IsUnitGroupLeader) == "function" and IsUnitGroupLeader(unitTag) == true
+end
+
 local function ApplySort(members)
     table.sort(members, function(a, b)
         local aSort = a.roleSort or GetRoleSort(a.role)
@@ -138,6 +142,7 @@ function STATE.Refresh()
                 name = GetMemberName(unitTag),
                 role = role,
                 roleSort = GetRoleSort(role),
+                isLeader = IsLeader(unitTag),
                 levelText = GetLevelText(unitTag),
                 classText = GetClassText(unitTag),
                 currentHealth = currentHealth,
@@ -168,6 +173,7 @@ function STATE.Init()
         EVENT_GROUP_MEMBER_JOINED,
         EVENT_GROUP_MEMBER_LEFT,
         EVENT_GROUP_UPDATE,
+        EVENT_LEADER_UPDATE,
         EVENT_GROUP_MEMBER_ROLE_CHANGED,
         EVENT_UNIT_DEATH_STATE_CHANGED,
         EVENT_POWER_UPDATE,
