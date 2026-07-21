@@ -11,8 +11,8 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 ## Metadatos de versión
 
-- Versión del addon: `0.1.15`
-- AddOnVersion: `115`
+- Versión del addon: `0.1.16`
+- AddOnVersion: `116`
 - APIVersion: `101049 101050`
 - Estado: beta pública
 
@@ -48,7 +48,9 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Colores de rol configurables para tanque, healer, DD y rol desconocido.
 - Texto opcional de nivel y clase, separado del nombre del jugador para mejorar la legibilidad.
 - Panel movible cuando la posición de los frames está desbloqueada.
-- Integración temporal con el modo compartido de disposición de interfaz de EZOCore, sin cambiar la preferencia de bloqueo guardada.
+- Integración temporal con el modo compartido de disposición de interfaz de EZOCore (`family.layout`), mostrando frames de previsualización de ejemplo al entrar en modo de edición sin estar en un grupo activo.
+- Interruptor principal para activar o desactivar los frames propios de grupo en el menú de ajustes.
+- Modos de previsualización de ejemplo: muestra temporalmente 4 miembros (mazmorra) o 12 miembros (trial) para ajustar la disposición, posición, escala y colores sin grupo real.
 - Ajuste de escala de los frames.
 - Comportamiento opcional de mostrar solo estando en grupo.
 - Ocultación opcional del contenedor nativo de frames de grupo de ESO mientras EZOGroupFrames muestra activamente sus propios frames.
@@ -76,6 +78,7 @@ Opciones de frames de grupo:
 
 - Activar frames propios de grupo.
 - Bloquear posición de los frames.
+- Modo previsualización de ejemplo (Desactivado, Ejemplo 4 miembros, Ejemplo 12 miembros).
 - Mostrar solo en grupo.
 - Ocultar frames de grupo de ESO mientras está activo.
 - Mostrar nivel.

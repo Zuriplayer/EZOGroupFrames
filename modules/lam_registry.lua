@@ -126,7 +126,7 @@ local function RegisterBaseSections()
                 tooltip = GetString(EZO_GF_OPTION_FRAMES_ENABLE_TOOLTIP),
                 getFunc = function() return addon.sv.frames.enabled == true end,
                 setFunc = function(value) addon.sv.frames.enabled = value == true; RefreshFrames() end,
-                default = false,
+                default = true,
             },
             {
                 type = "checkbox",
@@ -134,7 +134,29 @@ local function RegisterBaseSections()
                 tooltip = GetString(EZO_GF_OPTION_FRAMES_LOCK_TOOLTIP),
                 getFunc = function() return addon.sv.frames.locked ~= false end,
                 setFunc = function(value) addon.sv.frames.locked = value ~= false; RefreshFrames() end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
                 default = true,
+            },
+            {
+                type = "dropdown",
+                name = GetString(EZO_GF_OPTION_PREVIEW_MODE),
+                tooltip = GetString(EZO_GF_OPTION_PREVIEW_MODE_TOOLTIP),
+                choices = {
+                    GetString(EZO_GF_PREVIEW_OFF),
+                    GetString(EZO_GF_PREVIEW_GROUP_4),
+                    GetString(EZO_GF_PREVIEW_GROUP_12),
+                },
+                choicesValues = { 0, 4, 12 },
+                getFunc = function()
+                    return EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.GetPreviewMode and EZOGroupFrames_DebugSimulation.GetPreviewMode() or 0
+                end,
+                setFunc = function(value)
+                    if EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.SetPreviewMode then
+                        EZOGroupFrames_DebugSimulation.SetPreviewMode(value)
+                    end
+                end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
+                default = 0,
             },
             {
                 type = "checkbox",
@@ -142,6 +164,7 @@ local function RegisterBaseSections()
                 tooltip = GetString(EZO_GF_OPTION_FRAMES_GROUP_ONLY_TOOLTIP),
                 getFunc = function() return addon.sv.frames.showOnlyInGroup ~= false end,
                 setFunc = function(value) addon.sv.frames.showOnlyInGroup = value ~= false; RefreshFrames() end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
                 default = true,
             },
             {
@@ -156,6 +179,7 @@ local function RegisterBaseSections()
                     end
                     RefreshFrames()
                 end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
                 default = true,
             },
             {
@@ -164,6 +188,7 @@ local function RegisterBaseSections()
                 tooltip = GetString(EZO_GF_OPTION_SHOW_LEVEL_TOOLTIP),
                 getFunc = function() return addon.sv.frames.showLevel == true end,
                 setFunc = function(value) addon.sv.frames.showLevel = value == true; RefreshFrames() end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
                 default = false,
             },
             {
@@ -172,6 +197,7 @@ local function RegisterBaseSections()
                 tooltip = GetString(EZO_GF_OPTION_SHOW_CLASS_TOOLTIP),
                 getFunc = function() return addon.sv.frames.showClass == true end,
                 setFunc = function(value) addon.sv.frames.showClass = value == true; RefreshFrames() end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
                 default = false,
             },
             {
@@ -184,6 +210,7 @@ local function RegisterBaseSections()
                 decimals = 2,
                 getFunc = function() return tonumber(addon.sv.frames.scale) or 1 end,
                 setFunc = function(value) addon.sv.frames.scale = tonumber(value) or 1; RefreshFrames() end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
                 default = 1.0,
             },
             {
@@ -194,6 +221,7 @@ local function RegisterBaseSections()
                     return GetColor(addon.sv.frames, "tankColor", { r = 0.88, g = 0.28, b = 0.22, a = 1 })
                 end,
                 setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "tankColor", r, g, b, a) end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
                 default = { r = 0.88, g = 0.28, b = 0.22, a = 1 },
             },
             {
@@ -204,6 +232,7 @@ local function RegisterBaseSections()
                     return GetColor(addon.sv.frames, "healerColor", { r = 0.20, g = 0.78, b = 0.34, a = 1 })
                 end,
                 setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "healerColor", r, g, b, a) end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
                 default = { r = 0.20, g = 0.78, b = 0.34, a = 1 },
             },
             {
@@ -214,6 +243,7 @@ local function RegisterBaseSections()
                     return GetColor(addon.sv.frames, "damageColor", { r = 0.32, g = 0.52, b = 1.0, a = 1 })
                 end,
                 setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "damageColor", r, g, b, a) end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
                 default = { r = 0.32, g = 0.52, b = 1.0, a = 1 },
             },
             {
@@ -224,6 +254,7 @@ local function RegisterBaseSections()
                     return GetColor(addon.sv.frames, "unknownColor", { r = 0.72, g = 0.72, b = 0.78, a = 1 })
                 end,
                 setFunc = function(r, g, b, a) SetColor(addon.sv.frames, "unknownColor", r, g, b, a) end,
+                disabled = function() return addon.sv.frames.enabled ~= true end,
                 default = { r = 0.72, g = 0.72, b = 0.78, a = 1 },
             },
         }

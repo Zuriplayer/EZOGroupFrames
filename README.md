@@ -11,8 +11,8 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 ## Version Metadata
 
-- Addon version: `0.1.15`
-- AddOnVersion: `115`
+- Addon version: `0.1.16`
+- AddOnVersion: `116`
 - APIVersion: `101049 101050`
 - Status: public beta
 
@@ -48,7 +48,9 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Configurable role colors for tank, healer, damage dealer and unknown role.
 - Optional level and class text, separated from the player name for readability.
 - Movable panel when the frame position is unlocked.
-- Temporary integration with the shared EZOCore interface layout mode, without changing the saved lock preference.
+- Temporary integration with the shared EZOCore interface layout mode (`family.layout`), showing sample preview frames when entering edit mode without an active group.
+- Master enable toggle for custom group frames in the addon panel.
+- Sample group preview modes: temporarily display 4 members (dungeon) or 12 members (trial) to adjust layout, position, scale and colors without a real group.
 - Frame scale setting.
 - Optional "show only while grouped" behavior.
 - Optional hiding of ESO's native group-frame container while EZOGroupFrames is actively showing its own frames.
@@ -76,6 +78,7 @@ Group frame options:
 
 - Enable custom group frames.
 - Lock frame position.
+- Sample preview mode (Off, Sample 4 members, Sample 12 members).
 - Show only while grouped.
 - Hide ESO group frames while active.
 - Show level.

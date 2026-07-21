@@ -19,9 +19,6 @@ local FILL_SHEEN_COLOR = { 1.0, 1.0, 1.0, 0.12 }
 local INNER_SHADE_COLOR = { 0, 0, 0, 0.16 }
 
 local function IsEnabled()
-    if EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.IsActive and EZOGroupFrames_DebugSimulation.IsActive() then
-        return true
-    end
     return EZOGroupFrames
         and EZOGroupFrames.sv
         and EZOGroupFrames.sv.frames
@@ -34,6 +31,9 @@ local function ShouldShow(members)
     end
     if EZOGroupFrames_HudVisibility and not EZOGroupFrames_HudVisibility.IsHudScene() then
         return false
+    end
+    if EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.IsActive and EZOGroupFrames_DebugSimulation.IsActive() then
+        return true
     end
     if EZOGroupFrames.sv.frames.showOnlyInGroup ~= false and #members == 0 then
         return false
@@ -54,6 +54,14 @@ function FRAMES.IsLayoutEditMode()
 end
 
 function FRAMES.SetLayoutEditMode(enabled)
+    if not IsEnabled() then
+        FRAMES.layoutEditMode = false
+        FRAMES.Refresh()
+        return false
+    end
+    if FRAMES.layoutEditMode == (enabled == true) then
+        return FRAMES.layoutEditMode
+    end
     FRAMES.layoutEditMode = enabled == true
     FRAMES.Refresh()
     return FRAMES.layoutEditMode
@@ -440,8 +448,14 @@ local function EnsureControls()
 end
 
 function FRAMES.Refresh()
+    if FRAMES.isRefreshing then
+        return
+    end
+    FRAMES.isRefreshing = true
+
     EnsureControls()
     if not FRAMES.container or not FRAMES.rows then
+        FRAMES.isRefreshing = false
         return
     end
 
@@ -450,26 +464,51 @@ function FRAMES.Refresh()
         members = EZOGroupFrames_GroupState.GetMembers()
     end
 
-    local functionalShow = ShouldShow(members)
-    FRAMES.functionalVisible = functionalShow
-    local settings = EZOGroupFrames.sv.frames
+    local enabled = IsEnabled()
+    local settings = EZOGroupFrames.sv and EZOGroupFrames.sv.frames or {}
     local isHudScene = not EZOGroupFrames_HudVisibility
         or not EZOGroupFrames_HudVisibility.IsHudScene
         or EZOGroupFrames_HudVisibility.IsHudScene()
-    local moveMode = isHudScene
-        and (FRAMES.layoutEditMode == true or settings.locked == false)
+
+    local isPreviewActive = enabled and isHudScene and EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.IsActive and EZOGroupFrames_DebugSimulation.IsActive()
+    local isEditModeActive = enabled and isHudScene and FRAMES.layoutEditMode == true
+
+    if #members == 0 and (isEditModeActive or isPreviewActive) and EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.GetSampleMembers then
+        local mode = EZOGroupFrames_DebugSimulation.GetPreviewMode and EZOGroupFrames_DebugSimulation.GetPreviewMode() or 0
+        local count = (mode == 4) and 4 or 12
+        members = EZOGroupFrames_DebugSimulation.GetSampleMembers(count)
+    end
+
+    local functionalShow = ShouldShow(members)
+    FRAMES.functionalVisible = functionalShow
+
+    local show = enabled and isHudScene and (functionalShow or isEditModeActive)
+    local moveMode = show and (isEditModeActive or settings.locked == false)
     FRAMES.moveEnabled = moveMode
+
     if FRAMES.dragActive and not moveMode then
         FRAMES.container:StopMovingOrResizing()
         FRAMES.dragActive = false
     end
-    local show = functionalShow or moveMode
+
     FRAMES.container:SetHidden(not show)
     if EZOGroupFrames_NativeFrames and EZOGroupFrames_NativeFrames.ApplyVisibility then
         EZOGroupFrames_NativeFrames.ApplyVisibility(functionalShow)
     end
     if not show then
+        FRAMES.isRefreshing = false
         return
+    end
+
+    if FRAMES.container.title then
+        local mode = EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.GetPreviewMode and EZOGroupFrames_DebugSimulation.GetPreviewMode() or 0
+        if mode == 12 or #members == 12 then
+            FRAMES.container.title:SetText(GetString(EZO_GF_STATUS_GROUP_PREVIEW_12))
+        elseif mode == 4 or #members == 4 then
+            FRAMES.container.title:SetText(GetString(EZO_GF_STATUS_GROUP_PREVIEW_4))
+        else
+            FRAMES.container.title:SetText(GetString(EZO_GF_STATUS_GROUP))
+        end
     end
 
     FRAMES.container:SetScale(tonumber(settings.scale) or 1)
@@ -495,6 +534,8 @@ function FRAMES.Refresh()
             UpdateBar(row, member)
         end
     end
+
+    FRAMES.isRefreshing = false
 end
 
 function FRAMES.Init()
