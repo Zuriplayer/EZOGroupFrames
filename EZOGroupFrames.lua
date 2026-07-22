@@ -7,6 +7,9 @@ local languageCallbackRegistered = false
 local ezocoreRegistered = false
 local layoutSurfaceRegistered = false
 local debugControllerRegistered = false
+local SAVED_VARIABLES_NAME = "EZOGroupFramesSV"
+local SAVED_VARIABLES_VERSION = 1
+local MIGRATION_MARKER = "__ezoPreferenceScopeMigrated"
 
 local DEFAULTS = {
     general = {
@@ -47,6 +50,30 @@ local function DeepCopyDefaults(src)
         end
     end
     return out
+end
+
+local function CopySavedValues(target, source)
+    if type(target) ~= "table" or type(source) ~= "table" then
+        return
+    end
+
+    for key, value in pairs(source) do
+        if key ~= MIGRATION_MARKER then
+            target[key] = type(value) == "table" and DeepCopyDefaults(value) or value
+        end
+    end
+end
+
+local function GetPreferenceScope()
+    if EZOCore and type(EZOCore.GetPreferenceScope) == "function" then
+        local ok, scope = pcall(function()
+            return EZOCore:GetPreferenceScope("ezogroupframes", "settings")
+        end)
+        if ok and scope == "character" then
+            return "character"
+        end
+    end
+    return "account"
 end
 
 function ADDON.GetDefaultLanguage()
@@ -253,7 +280,20 @@ function ADDON.Refresh()
 end
 
 function ADDON.Initialize()
-    ADDON.sv = ZO_SavedVars:NewAccountWide("EZOGroupFramesSV", 1, GetWorldName(), DEFAULTS)
+    local world = GetWorldName()
+    local scope = GetPreferenceScope()
+    ADDON.preferenceScope = scope
+
+    if scope == "character" then
+        ADDON.sv = ZO_SavedVars:NewCharacterIdSettings(SAVED_VARIABLES_NAME, SAVED_VARIABLES_VERSION, world, DEFAULTS)
+        if type(ADDON.sv) == "table" and ADDON.sv[MIGRATION_MARKER] ~= true then
+            local accountSv = ZO_SavedVars:NewAccountWide(SAVED_VARIABLES_NAME, SAVED_VARIABLES_VERSION, world, nil)
+            CopySavedValues(ADDON.sv, accountSv)
+            ADDON.sv[MIGRATION_MARKER] = true
+        end
+    else
+        ADDON.sv = ZO_SavedVars:NewAccountWide(SAVED_VARIABLES_NAME, SAVED_VARIABLES_VERSION, world, DEFAULTS)
+    end
     ADDON.EnsureDefaults()
 
     ADDON.ApplyLanguagePreference(ADDON.sv.general.language)

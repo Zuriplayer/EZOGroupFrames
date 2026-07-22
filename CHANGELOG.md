@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Follows EZOCore's family preference storage policy for group-frame settings, with one-time account-to-character migration when the default scope is per character.
+
 ## 0.1.15 - Leader Crown Overlay
 
 - Draws the group leader crown as a high-layer overlay anchored to the health bar so the bar fill and caps cannot cover it.

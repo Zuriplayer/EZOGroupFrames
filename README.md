@@ -68,6 +68,8 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 
 With EZOCore enabled, the complete panel appears only under Settings > EZO and its group-frame surface can participate in the global or individual interface layout mode. Without EZOCore, the same controls and local unlock behavior remain available in the standard LibAddonMenu Addons list.
 
+With EZOCore active, EZOGroupFrames follows the EZO family preference storage policy: ordinary group-frame settings use the selected account-wide or per-character scope. When the scope is per character, the first load copies existing account-wide EZOGroupFrames settings into that character profile. Without EZOCore, EZOGroupFrames keeps its historical account-wide storage.
+
 Every settings section uses the shared EZO purple information icon in its heading. Hover the section heading for general help about that group of options; hover an individual setting for field-specific help. No long explanatory paragraphs are kept permanently visible in the panel.
 
 General options:

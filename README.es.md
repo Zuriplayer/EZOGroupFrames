@@ -68,6 +68,8 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 
 Con EZOCore activo, el panel completo aparece únicamente dentro de Ajustes > EZO y la superficie de frames puede participar en el modo global o individual de disposición de interfaz. Sin EZOCore, los mismos controles y el desbloqueo local siguen disponibles en la lista estándar de Addons de LibAddonMenu.
 
+Con EZOCore activo, EZOGroupFrames sigue la política familiar de guardado de preferencias EZO: los ajustes ordinarios de frames usan el alcance seleccionado por cuenta o por personaje. Cuando el alcance es por personaje, la primera carga copia los ajustes existentes de cuenta de EZOGroupFrames al perfil de ese personaje. Sin EZOCore, EZOGroupFrames conserva su guardado histórico por cuenta.
+
 Cada sección de ajustes usa el icono informativo morado compartido de la familia EZO en su cabecera. Pasa el ratón sobre la cabecera de sección para ver la ayuda general de ese grupo de opciones; pasa el ratón sobre un ajuste concreto para ver su ayuda específica. El panel no mantiene párrafos explicativos largos visibles de forma permanente.
 
 Opciones generales:
