@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Follows EZOCore's family preference storage policy for group-frame settings, with one-time account-to-character migration when the default scope is per character.
+- Replaces native group-frame hidden-reason toggling with visual hiding of `ZO_UnitFramesGroups` to avoid interfering with ESO keyboard/gamepad style refreshes.
 
 ## 0.1.15 - Leader Crown Overlay
 
