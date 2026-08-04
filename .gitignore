@@ -50,3 +50,7 @@ private-notes.md
 *~
 Thumbs.db
 Desktop.ini
+
+# Keep shared AI project instructions versioned.
+!AGENTS.md
+!CLAUDE.md

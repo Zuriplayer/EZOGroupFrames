@@ -11,8 +11,8 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 ## Metadatos de versión
 
-- Versión del addon: `0.1.16`
-- AddOnVersion: `116`
+- Versión del addon: `0.1.17`
+- AddOnVersion: `117`
 - APIVersion: `101049 101050`
 - Estado: beta pública
 

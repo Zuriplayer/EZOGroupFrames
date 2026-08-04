@@ -17,6 +17,31 @@ function REG.CreateInfoHeader(name, tooltip)
     }
 end
 
+function REG.RequestSettingsRefresh(forceRebuild)
+    local function RefreshHostedPanel()
+        if EZOGroupFrames and EZOGroupFrames.ezoSettingsRegistered
+            and EZOCore
+            and type(EZOCore.RefreshSettingsPanel) == "function" then
+            pcall(function() EZOCore:RefreshSettingsPanel(forceRebuild == true) end)
+        end
+    end
+
+    if forceRebuild == true and type(zo_callLater) == "function" then
+        zo_callLater(RefreshHostedPanel, 1)
+    else
+        RefreshHostedPanel()
+    end
+
+    local LAM = LibAddonMenu2
+    local util = LAM and LAM.util
+    if util and type(util.RequestRefreshIfNeeded) == "function" then
+        local panel = EZOGroupFrames and EZOGroupFrames._lamPanel or _G.EZOGroupFrames_Panel
+        if panel then
+            pcall(util.RequestRefreshIfNeeded, panel)
+        end
+    end
+end
+
 function REG.RegisterSection(name, order, provider)
     REG._sections[name] = { order = order or 100, provider = provider }
 end
@@ -40,17 +65,23 @@ function REG.GetSortedOptions()
     return options
 end
 
-local function RefreshFrames()
+local function RefreshFrames(refreshSettings)
     if EZOGroupFrames_Frames and EZOGroupFrames_Frames.Refresh then
         EZOGroupFrames_Frames.Refresh()
     end
+    if refreshSettings == true then
+        REG.RequestSettingsRefresh(true)
+    end
 end
 
-local function RefreshEzoStatus()
+local function RefreshEzoStatus(refreshSettings)
     RefreshFrames()
     if EZOGroupFrames_EZOCorePerformance
         and type(EZOGroupFrames_EZOCorePerformance.RefreshPublisher) == "function" then
         EZOGroupFrames_EZOCorePerformance.RefreshPublisher()
+    end
+    if refreshSettings == true then
+        REG.RequestSettingsRefresh(true)
     end
 end
 
@@ -125,7 +156,7 @@ local function RegisterBaseSections()
                 name = GetString(EZO_GF_OPTION_FRAMES_ENABLE),
                 tooltip = GetString(EZO_GF_OPTION_FRAMES_ENABLE_TOOLTIP),
                 getFunc = function() return addon.sv.frames.enabled == true end,
-                setFunc = function(value) addon.sv.frames.enabled = value == true; RefreshFrames() end,
+                setFunc = function(value) addon.sv.frames.enabled = value == true; RefreshFrames(true) end,
                 default = true,
             },
             {
@@ -271,7 +302,7 @@ local function RegisterBaseSections()
                 getFunc = function() return addon.sv.ezoStatus.showPlayerStatus == true end,
                 setFunc = function(value)
                     addon.sv.ezoStatus.showPlayerStatus = value == true
-                    RefreshEzoStatus()
+                    RefreshEzoStatus(true)
                 end,
                 default = false,
             },
@@ -309,7 +340,7 @@ local function RegisterBaseSections()
                 getFunc = function() return addon.sv.ezoStatus.sharePerformance == true end,
                 setFunc = function(value)
                     addon.sv.ezoStatus.sharePerformance = value == true
-                    RefreshEzoStatus()
+                    RefreshEzoStatus(true)
                 end,
                 disabled = function()
                     if addon.sv.ezoStatus.sharePerformance == true then
@@ -335,6 +366,7 @@ local function RegisterBaseSections()
                 getFunc = function() return addon.sv.general.debug == true end,
                 setFunc = function(value)
                     addon.SetDebugModeEnabled(value == true)
+                    REG.RequestSettingsRefresh(true)
                 end,
                 default = false,
             },

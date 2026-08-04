@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.17 - Dependent Settings Refresh
+
+- Refreshes the EZOCore-hosted and standalone settings panels after master toggles change dependent control availability.
+- Fixes EZO player status options staying greyed out after enabling "Show EZO player status in group frames" until the settings panel was reopened.
+
 ## 0.1.16 - Preference Scope and Native Frame Safety - 2026-07-28
 
 - Follows EZOCore's family preference storage policy for group-frame settings, with one-time account-to-character migration when the default scope is per character.
