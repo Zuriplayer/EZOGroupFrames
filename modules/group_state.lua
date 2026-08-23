@@ -117,6 +117,43 @@ local function GetClassText(unitTag)
     return className
 end
 
+local function IsSameUnit(firstUnitTag, secondUnitTag)
+    if firstUnitTag == secondUnitTag then
+        return true
+    end
+    if type(AreUnitsEqual) == "function" then
+        return AreUnitsEqual(firstUnitTag, secondUnitTag) == true
+    end
+    return false
+end
+
+local function AddMember(members, seen, unitTag, localPlayerGroupTag)
+    if type(unitTag) ~= "string" or unitTag == "" or seen[unitTag] then
+        return false
+    end
+
+    local isPlayer = unitTag == "player"
+        or unitTag == localPlayerGroupTag
+        or IsSameUnit(unitTag, "player")
+    seen[unitTag] = true
+
+    local currentHealth, maxHealth, healthPercent = GetHealth(unitTag)
+    local role = GetRole(unitTag)
+    members[#members + 1] = {
+        unitTag = unitTag,
+        name = GetMemberName(unitTag),
+        role = role,
+        roleSort = GetRoleSort(role),
+        isLeader = IsLeader(unitTag),
+        levelText = GetLevelText(unitTag),
+        classText = GetClassText(unitTag),
+        currentHealth = currentHealth,
+        maxHealth = maxHealth,
+        healthPercent = healthPercent,
+    }
+    return isPlayer
+end
+
 function STATE.Refresh()
     if EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.GetMembers then
         local simulatedMembers = EZOGroupFrames_DebugSimulation.GetMembers()
@@ -132,24 +169,25 @@ function STATE.Refresh()
 
     local members = {}
     local size = type(GetGroupSize) == "function" and tonumber(GetGroupSize()) or 0
-    if size and size > 0 then
-        for i = 1, size do
-            local unitTag = "group" .. tostring(i)
-            local currentHealth, maxHealth, healthPercent = GetHealth(unitTag)
-            local role = GetRole(unitTag)
-            members[#members + 1] = {
-                unitTag = unitTag,
-                name = GetMemberName(unitTag),
-                role = role,
-                roleSort = GetRoleSort(role),
-                isLeader = IsLeader(unitTag),
-                levelText = GetLevelText(unitTag),
-                classText = GetClassText(unitTag),
-                currentHealth = currentHealth,
-                maxHealth = maxHealth,
-                healthPercent = healthPercent,
-            }
+    local isGrouped = type(IsUnitGrouped) == "function" and IsUnitGrouped("player") == true
+    if not isGrouped then
+        isGrouped = size > 0
+    end
+
+    local seen = {}
+    local hasPlayer = false
+    local localPlayerGroupTag = type(GetLocalPlayerGroupUnitTag) == "function" and GetLocalPlayerGroupUnitTag() or nil
+    if isGrouped and type(GetGroupUnitTagByIndex) == "function" then
+        for index = 1, size do
+            local unitTag = GetGroupUnitTagByIndex(index)
+            if unitTag then
+                hasPlayer = AddMember(members, seen, unitTag, localPlayerGroupTag) or hasPlayer
+            end
         end
+    end
+
+    if isGrouped and not hasPlayer then
+        AddMember(members, seen, "player", localPlayerGroupTag)
     end
     ApplySort(members)
     STATE.members = members

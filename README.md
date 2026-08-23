@@ -11,8 +11,8 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 ## Version Metadata
 
-- Addon version: `0.1.17`
-- AddOnVersion: `117`
+- Addon version: `0.1.19`
+- AddOnVersion: `119`
 - APIVersion: `101049 101050`
 - Status: public beta
 
@@ -21,6 +21,7 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 - The Elder Scrolls Online.
 - LibAddonMenu-2.0.
 - Optional: EZOCore for central access through Settings > EZO and opt-in EZO player status in group frames.
+- Optional: EZOCustomSupportIcons for shared 3D overlay projection and separated icon lanes.
 - Optional for diagnostics: LibDebugLogger and DebugLogViewer.
 
 ## Installation
@@ -39,6 +40,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 ## Current Features
 
 - Custom group-frame panel for dungeon and trial groups.
+- Live group members are resolved through ESO's indexed group-unit API, including the local player in the custom frame list.
 - Members displayed in blocks of four.
 - Group members sorted by selected LFG role and then by name.
 - Native ESO role icons for tank, healer and damage dealer.
@@ -55,6 +57,12 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Optional "show only while grouped" behavior.
 - Optional hiding of ESO's native group-frame container while EZOGroupFrames is actively showing its own frames.
   This uses ESO's own group/raid frame hidden-reason mechanism when available.
+- Optional tank/healer reference overlay above visible group members, with independent tank and healer selection and
+  `Icon only`, `Name only`, or `Icon and name` display modes.
+- The role overlay uses the existing tank/healer colors, remains local to the client, is HUD/HUD_UI-only, and is
+  suppressed in PvP contexts where ESO role information is not reliable.
+- When EZOCustomSupportIcons is installed and supports the shared provider API, its world projection window is reused
+  and role markers use a lower vertical lane than support/tactical icons.
 - Optional EZO player status beside each group member, consumed through EZOCore group presence: ping as `42ms`, FPS as `58fps`, and a compact privacy badge.
 - Optional EZO status warning colors: ping turns yellow from `150ms` and red from `250ms`; FPS turns yellow at `45fps` or lower and red at `30fps` or lower.
 - Optional opt-in sharing of your rounded ping, FPS and public privacy status through EZOCore group presence at a limited interval.
@@ -91,6 +99,12 @@ Group frame options:
 - Damage color.
 - Unknown role color.
 
+Role reference overlay options:
+
+- Show tank/healer reference overlay.
+- Show tanks and choose tank marker content: icon only, name only, or icon and name.
+- Show healers and choose healer marker content: icon only, name only, or icon and name.
+
 EZO player status options:
 
 - Show EZO player status in group frames.
@@ -120,6 +134,8 @@ The addon manifest loads the current runtime in this order:
 - `modules/lam_registry.lua`: LibAddonMenu option registration.
 - `modules/menu.lua`: LibAddonMenu panel creation.
 - `modules/frames.lua`: custom frame rendering and health-bar layout.
+- `modules/role_overlay.lua`: optional tank/healer world-space reference overlay and coordination with
+  `EZOCustomSupportIcons`.
 
 ## Safety Limits
 
@@ -127,6 +143,8 @@ The addon manifest loads the current runtime in this order:
 - The addon does not invite, kick, promote, queue, ready-check or disband groups.
 - The addon does not change keybinds or input behavior.
 - The addon does not perform combat actions.
+- The role reference overlay does not select targets, move the player, or automate mechanics; it only renders local
+  visual information from the current group snapshot.
 - The addon does not own, register or handle LibGroupBroadcast protocols directly. Optional player status is consumed or shared only through the EZOCore service API.
 - Player status sharing is disabled by default and limited to rounded ping, FPS and privacy state. It can only be enabled while the EZOCore group transport is active.
 - Performance transport results and first received peer states are written to Log Viewer only when addon debug is enabled.
@@ -134,6 +152,8 @@ The addon manifest loads the current runtime in this order:
 - Native ESO group frames are hidden only while EZOGroupFrames is actively showing its own frames, and that behavior can be disabled in settings.
   The addon does not directly force-hide the native group frame container when ESO's hidden-reason API is available.
 - Persistent visual controls are intended to be visible only in ESO HUD/HUD UI scenes.
+- Role markers are limited to visible online group players in the same valid world/instance context and are disabled
+  in PvP/battleground contexts when ESO role data may not be reliable.
 
 ## Recommended Testing
 
@@ -160,6 +180,11 @@ For beta testing, please verify:
 - The debug simulated group appears only when debug mode is enabled.
 - ESO native group frames return when EZOGroupFrames is disabled or not showing.
 - With native-frame hiding enabled, switching between keyboard and gamepad mode does not raise native unit-frame errors.
+- With EZOAuto hiding group nameplates, enable the role overlay and verify tank/healer markers remain visible inside and
+  outside combat, including each of the three content modes.
+- With EZOCustomSupportIcons installed, verify role markers do not overlap its configured or tactical head icons; repeat
+  without EZOCustomSupportIcons to confirm the standalone renderer works.
+- In PvP and battleground contexts, verify the role overlay stays hidden rather than presenting stale role data.
 - The UI is checked in keyboard and gamepad modes.
 
 ## License

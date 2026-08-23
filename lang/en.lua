@@ -4,6 +4,11 @@ EZO_GROUP_FRAMES_STRINGS_EN = {
     EZO_GF_MENU_FRAMES = "Group frames",
     EZO_GF_MENU_FRAMES_TOOLTIP = "Custom group-frame display settings. These controls affect the addon panel, " ..
         "role sorting, health-bar presentation, and optional native-frame hiding.",
+    EZO_GF_MENU_ROLE_OVERLAY = "Tank/healer reference overlay",
+    EZO_GF_MENU_ROLE_OVERLAY_TOOLTIP = "Optional HUD overlay for nearby group tanks and healers. It is intended as a " ..
+        "visual reference when other addons hide ESO's floating group nameplates. It stays local to your client, " ..
+        "is disabled in PvP contexts where ESO role data is not reliable, and uses a separate vertical lane from " ..
+        "EZOCustomSupportIcons when that addon is available.",
     EZO_GF_MENU_EZO_STATUS = "EZO player status",
     EZO_GF_MENU_EZO_STATUS_TOOLTIP = "Optional EZO-family player status shown in the compact group frames. " ..
         "Data is consumed and shared only through EZOCore group presence when compatible clients provide it.",
@@ -25,6 +30,23 @@ EZO_GROUP_FRAMES_STRINGS_EN = {
     EZO_GF_OPTION_HIDE_NATIVE = "Hide ESO group frames while active",
     EZO_GF_OPTION_HIDE_NATIVE_TOOLTIP = "Hides ESO's native group frame container only while EZOGroupFrames " ..
         "is showing its own frames.",
+    EZO_GF_OPTION_ROLE_OVERLAY_ENABLE = "Show tank/healer reference overlay",
+    EZO_GF_OPTION_ROLE_OVERLAY_ENABLE_TOOLTIP = "Shows a small world-space marker above visible group tanks and/or " ..
+        "healers. This does not change ESO nameplate settings and remains visible inside and outside combat when " ..
+        "the HUD is active.",
+    EZO_GF_OPTION_ROLE_OVERLAY_TANKS = "Show tanks",
+    EZO_GF_OPTION_ROLE_OVERLAY_TANKS_TOOLTIP = "Include group members whose selected ESO role is tank.",
+    EZO_GF_OPTION_ROLE_OVERLAY_TANK_MODE = "Tank marker content",
+    EZO_GF_OPTION_ROLE_OVERLAY_TANK_MODE_TOOLTIP = "Choose whether tank markers show only the role icon, only the " ..
+        "player name, or both.",
+    EZO_GF_OPTION_ROLE_OVERLAY_HEALERS = "Show healers",
+    EZO_GF_OPTION_ROLE_OVERLAY_HEALERS_TOOLTIP = "Include group members whose selected ESO role is healer.",
+    EZO_GF_OPTION_ROLE_OVERLAY_HEALER_MODE = "Healer marker content",
+    EZO_GF_OPTION_ROLE_OVERLAY_HEALER_MODE_TOOLTIP = "Choose whether healer markers show only the role icon, only " ..
+        "the player name, or both.",
+    EZO_GF_ROLE_OVERLAY_MODE_ICON = "Icon only",
+    EZO_GF_ROLE_OVERLAY_MODE_NAME = "Name only",
+    EZO_GF_ROLE_OVERLAY_MODE_ICON_NAME = "Icon and name",
     EZO_GF_OPTION_SHOW_LEVEL = "Show level",
     EZO_GF_OPTION_SHOW_LEVEL_TOOLTIP = "Adds the member level or Champion Point text to each custom frame " ..
         "when ESO provides it.",

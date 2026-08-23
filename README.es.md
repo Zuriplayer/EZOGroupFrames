@@ -11,8 +11,8 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 ## Metadatos de versión
 
-- Versión del addon: `0.1.17`
-- AddOnVersion: `117`
+- Versión del addon: `0.1.19`
+- AddOnVersion: `119`
 - APIVersion: `101049 101050`
 - Estado: beta pública
 
@@ -21,6 +21,7 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 - The Elder Scrolls Online.
 - LibAddonMenu-2.0.
 - Opcional: EZOCore para el acceso central desde Ajustes > EZO y estado EZO de jugador opcional en los frames de grupo.
+- Opcional: EZOCustomSupportIcons para compartir la proyección del overlay 3D y separar los carriles de iconos.
 - Opcional para diagnóstico: LibDebugLogger y DebugLogViewer.
 
 ## Instalación
@@ -39,6 +40,7 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 ## Funciones Actuales
 
 - Panel propio de frames de grupo para grupos de mazmorra y trial.
+- Los miembros reales se resuelven mediante la API indexada de unidades de grupo de ESO, incluyendo al jugador local en la lista propia de frames.
 - Miembros mostrados en bloques de cuatro.
 - Miembros del grupo ordenados por rol LFG seleccionado y después por nombre.
 - Iconos nativos de ESO para los roles de tanque, healer y DD.
@@ -55,6 +57,12 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Comportamiento opcional de mostrar solo estando en grupo.
 - Ocultación opcional del contenedor nativo de frames de grupo de ESO mientras EZOGroupFrames muestra activamente sus propios frames.
   Usa el mecanismo propio de ESO de motivos de ocultación de frames de grupo/raid cuando está disponible.
+- Overlay opcional de referencia sobre tanques y healers visibles del grupo, con selección independiente para cada rol y
+  modos de contenido `Solo icono`, `Solo nombre` o `Icono y nombre`.
+- El overlay de rol usa los colores existentes de tanque/healer, es local al cliente, solo aparece en HUD/HUD_UI y se
+  suprime en contextos PvP donde la información de rol de ESO no es fiable.
+- Cuando EZOCustomSupportIcons está instalado y admite la API de proveedor compartido, reutiliza su ventana de
+  proyección 3D y coloca los marcadores de rol en un carril vertical inferior al de los iconos de soporte/tácticos.
 - Estado EZO de jugador opcional junto a cada miembro del grupo, consumido mediante presencia de grupo de EZOCore: ping como `42ms`, FPS como `58fps` y una insignia compacta de privacidad.
 - Colores de aviso opcionales para el estado EZO: el ping pasa a amarillo desde `150ms` y a rojo desde `250ms`; los FPS pasan a amarillo con `45fps` o menos y a rojo con `30fps` o menos.
 - Compartición opcional y expresa de tu ping, FPS y estado público de privacidad redondeados mediante presencia de grupo de EZOCore con intervalo limitado.
@@ -91,6 +99,12 @@ Opciones de frames de grupo:
 - Color de DD.
 - Color de rol desconocido.
 
+Opciones del overlay de referencia:
+
+- Mostrar overlay de referencia de tanques/healers.
+- Mostrar tanques y elegir el contenido: solo icono, solo nombre o icono y nombre.
+- Mostrar healers y elegir el contenido: solo icono, solo nombre o icono y nombre.
+
 Opciones de estado EZO de jugador:
 
 - Mostrar estado EZO de jugador en frames de grupo.
@@ -120,6 +134,8 @@ El manifiesto del addon carga el runtime actual en este orden:
 - `modules/lam_registry.lua`: registro de opciones de LibAddonMenu.
 - `modules/menu.lua`: creación del panel de LibAddonMenu.
 - `modules/frames.lua`: renderizado de frames propios y layout de barras de salud.
+- `modules/role_overlay.lua`: overlay opcional en el mundo para tanques/healers y coordinación con
+  `EZOCustomSupportIcons`.
 
 ## Límites de Seguridad
 
@@ -127,6 +143,8 @@ El manifiesto del addon carga el runtime actual en este orden:
 - El addon no invita, expulsa, promociona, apunta a cola, confirma ready checks ni disuelve grupos.
 - El addon no cambia atajos de teclado ni comportamiento de entrada.
 - El addon no realiza acciones de combate.
+- El overlay de referencia de rol no selecciona objetivos, mueve al jugador ni automatiza mecánicas; solo renderiza
+  información visual local a partir del snapshot actual del grupo.
 - El addon no es propietario, no registra y no maneja directamente protocolos de LibGroupBroadcast. El estado opcional de jugador se consume o comparte solo mediante la API de servicio de EZOCore.
 - La compartición de estado de jugador está desactivada por defecto y se limita a ping, FPS y privacidad redondeados. Solo puede activarse mientras el transporte de grupo de EZOCore está operativo.
 - Los resultados del transporte de rendimiento y los primeros estados recibidos de cada par se escriben en Log Viewer únicamente cuando el debug del addon está activo.
@@ -134,6 +152,8 @@ El manifiesto del addon carga el runtime actual en este orden:
 - Los frames nativos de grupo de ESO solo se ocultan mientras EZOGroupFrames muestra activamente sus propios frames, y ese comportamiento puede desactivarse en configuración.
   El addon no fuerza directamente la ocultación del contenedor nativo cuando la API de motivos de ocultación de ESO está disponible.
 - Los controles visuales persistentes están pensados para mostrarse solo en escenas HUD/HUD UI de ESO.
+- Los marcadores de rol se limitan a jugadores de grupo visibles y conectados en un contexto válido de mundo/instancia,
+  y se desactivan en contextos PvP/battleground cuando el rol de ESO puede no ser fiable.
 
 ## Pruebas Recomendadas
 
@@ -160,6 +180,11 @@ Para probar la beta, revisa:
 - El grupo simulado de debug aparece solo cuando el modo debug está activo.
 - Los frames nativos de ESO vuelven cuando EZOGroupFrames está desactivado o no se está mostrando.
 - Con la ocultación de frames nativos activa, cambiar entre modo teclado y modo gamepad no genera errores nativos de unit frames.
+- Con EZOAuto ocultando los nombres de grupo, activa el overlay de rol y comprueba que los marcadores de tanques/healers
+  siguen visibles dentro y fuera de combate, incluyendo los tres modos de contenido.
+- Con EZOCustomSupportIcons instalado, comprueba que los marcadores de rol no se solapan con sus iconos configurados o
+  tácticos; repite sin EZOCustomSupportIcons para confirmar que el renderer independiente funciona.
+- En PvP y battlegrounds, comprueba que el overlay de rol permanece oculto en lugar de mostrar roles obsoletos.
 - La UI se comprueba en modo teclado y modo gamepad.
 
 ## Licencia

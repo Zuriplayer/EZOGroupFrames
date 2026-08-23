@@ -5,6 +5,11 @@ EZO_GROUP_FRAMES_STRINGS_ES = {
     EZO_GF_MENU_FRAMES_TOOLTIP = "Ajustes de visualización de los frames propios de grupo. " ..
         "Estos controles afectan al panel del addon, la ordenación por rol, la presentación de barras de salud " ..
         "y la ocultación opcional de los frames nativos.",
+    EZO_GF_MENU_ROLE_OVERLAY = "Overlay de referencia de tanques/healers",
+    EZO_GF_MENU_ROLE_OVERLAY_TOOLTIP = "Overlay opcional del HUD para tanques y healers de grupo cercanos. Sirve " ..
+        "como referencia visual cuando otros addons ocultan los nombres flotantes de grupo de ESO. Es local a " ..
+        "tu cliente, se desactiva en contextos PvP donde el rol de ESO no es fiable y usa un carril vertical " ..
+        "separado de EZOCustomSupportIcons cuando ese addon está disponible.",
     EZO_GF_MENU_EZO_STATUS = "Estado EZO de jugador",
     EZO_GF_MENU_EZO_STATUS_TOOLTIP = "Estado opcional de jugador de la familia EZO mostrado en los frames compactos. " ..
         "Los datos se consumen y comparten solo mediante presencia de grupo de EZOCore cuando los clientes compatibles los proporcionan.",
@@ -26,6 +31,23 @@ EZO_GROUP_FRAMES_STRINGS_ES = {
     EZO_GF_OPTION_HIDE_NATIVE = "Ocultar frames nativos mientras esté activo",
     EZO_GF_OPTION_HIDE_NATIVE_TOOLTIP = "Oculta el contenedor nativo de frames de grupo de ESO solo mientras " ..
         "EZOGroupFrames muestra sus propios frames.",
+    EZO_GF_OPTION_ROLE_OVERLAY_ENABLE = "Mostrar overlay de referencia de tanques/healers",
+    EZO_GF_OPTION_ROLE_OVERLAY_ENABLE_TOOLTIP = "Muestra un marcador pequeño en el mundo sobre tanques y/o healers " ..
+        "de grupo visibles. No cambia los ajustes de nameplates de ESO y permanece visible dentro y fuera de " ..
+        "combate mientras el HUD esté activo.",
+    EZO_GF_OPTION_ROLE_OVERLAY_TANKS = "Mostrar tanques",
+    EZO_GF_OPTION_ROLE_OVERLAY_TANKS_TOOLTIP = "Incluye miembros de grupo cuyo rol seleccionado en ESO sea tanque.",
+    EZO_GF_OPTION_ROLE_OVERLAY_TANK_MODE = "Contenido del marcador de tanque",
+    EZO_GF_OPTION_ROLE_OVERLAY_TANK_MODE_TOOLTIP = "Elige si los marcadores de tanque muestran solo el icono de rol, " ..
+        "solo el nombre del jugador o ambos.",
+    EZO_GF_OPTION_ROLE_OVERLAY_HEALERS = "Mostrar healers",
+    EZO_GF_OPTION_ROLE_OVERLAY_HEALERS_TOOLTIP = "Incluye miembros de grupo cuyo rol seleccionado en ESO sea healer.",
+    EZO_GF_OPTION_ROLE_OVERLAY_HEALER_MODE = "Contenido del marcador de healer",
+    EZO_GF_OPTION_ROLE_OVERLAY_HEALER_MODE_TOOLTIP = "Elige si los marcadores de healer muestran solo el icono de rol, " ..
+        "solo el nombre del jugador o ambos.",
+    EZO_GF_ROLE_OVERLAY_MODE_ICON = "Solo icono",
+    EZO_GF_ROLE_OVERLAY_MODE_NAME = "Solo nombre",
+    EZO_GF_ROLE_OVERLAY_MODE_ICON_NAME = "Icono y nombre",
     EZO_GF_OPTION_SHOW_LEVEL = "Mostrar nivel",
     EZO_GF_OPTION_SHOW_LEVEL_TOOLTIP = "Añade el nivel o los Puntos de Campeón del miembro a cada frame propio " ..
         "cuando ESO proporciona ese dato.",

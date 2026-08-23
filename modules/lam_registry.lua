@@ -74,6 +74,15 @@ local function RefreshFrames(refreshSettings)
     end
 end
 
+local function RefreshRoleOverlay(refreshSettings)
+    if EZOGroupFrames_RoleOverlay and EZOGroupFrames_RoleOverlay.Refresh then
+        EZOGroupFrames_RoleOverlay.Refresh()
+    end
+    if refreshSettings == true then
+        REG.RequestSettingsRefresh(true)
+    end
+end
+
 local function RefreshEzoStatus(refreshSettings)
     RefreshFrames()
     if EZOGroupFrames_EZOCorePerformance
@@ -351,6 +360,88 @@ local function RegisterBaseSections()
                         and not EZOGroupFrames_EZOCorePerformance.IsTransportActive()
                 end,
                 default = false,
+            },
+        }
+    end)
+
+    REG.RegisterSection("roleOverlay", 12, function()
+        local addon = EZOGroupFrames
+        local roleOverlay = addon.sv.roleOverlay
+        local disabled = function() return roleOverlay.enabled ~= true end
+        local modeChoices = {
+            GetString(EZO_GF_ROLE_OVERLAY_MODE_ICON),
+            GetString(EZO_GF_ROLE_OVERLAY_MODE_NAME),
+            GetString(EZO_GF_ROLE_OVERLAY_MODE_ICON_NAME),
+        }
+        local modeValues = { "icon", "name", "icon_name" }
+
+        return {
+            REG.CreateInfoHeader(
+                GetString(EZO_GF_MENU_ROLE_OVERLAY),
+                GetString(EZO_GF_MENU_ROLE_OVERLAY_TOOLTIP)
+            ),
+            {
+                type = "checkbox",
+                name = GetString(EZO_GF_OPTION_ROLE_OVERLAY_ENABLE),
+                tooltip = GetString(EZO_GF_OPTION_ROLE_OVERLAY_ENABLE_TOOLTIP),
+                getFunc = function() return roleOverlay.enabled == true end,
+                setFunc = function(value)
+                    roleOverlay.enabled = value == true
+                    RefreshRoleOverlay(true)
+                end,
+                default = false,
+            },
+            {
+                type = "checkbox",
+                name = GetString(EZO_GF_OPTION_ROLE_OVERLAY_TANKS),
+                tooltip = GetString(EZO_GF_OPTION_ROLE_OVERLAY_TANKS_TOOLTIP),
+                getFunc = function() return roleOverlay.showTanks == true end,
+                setFunc = function(value)
+                    roleOverlay.showTanks = value == true
+                    RefreshRoleOverlay(true)
+                end,
+                disabled = disabled,
+                default = true,
+            },
+            {
+                type = "dropdown",
+                name = GetString(EZO_GF_OPTION_ROLE_OVERLAY_TANK_MODE),
+                tooltip = GetString(EZO_GF_OPTION_ROLE_OVERLAY_TANK_MODE_TOOLTIP),
+                choices = modeChoices,
+                choicesValues = modeValues,
+                getFunc = function() return roleOverlay.tankMode or "icon" end,
+                setFunc = function(value)
+                    roleOverlay.tankMode = value or "icon"
+                    RefreshRoleOverlay()
+                end,
+                disabled = function() return roleOverlay.enabled ~= true or roleOverlay.showTanks ~= true end,
+                default = "icon",
+            },
+            {
+                type = "checkbox",
+                name = GetString(EZO_GF_OPTION_ROLE_OVERLAY_HEALERS),
+                tooltip = GetString(EZO_GF_OPTION_ROLE_OVERLAY_HEALERS_TOOLTIP),
+                getFunc = function() return roleOverlay.showHealers == true end,
+                setFunc = function(value)
+                    roleOverlay.showHealers = value == true
+                    RefreshRoleOverlay(true)
+                end,
+                disabled = disabled,
+                default = true,
+            },
+            {
+                type = "dropdown",
+                name = GetString(EZO_GF_OPTION_ROLE_OVERLAY_HEALER_MODE),
+                tooltip = GetString(EZO_GF_OPTION_ROLE_OVERLAY_HEALER_MODE_TOOLTIP),
+                choices = modeChoices,
+                choicesValues = modeValues,
+                getFunc = function() return roleOverlay.healerMode or "icon" end,
+                setFunc = function(value)
+                    roleOverlay.healerMode = value or "icon"
+                    RefreshRoleOverlay()
+                end,
+                disabled = function() return roleOverlay.enabled ~= true or roleOverlay.showHealers ~= true end,
+                default = "icon",
             },
         }
     end)

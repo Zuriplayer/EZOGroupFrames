@@ -31,6 +31,13 @@ local DEFAULTS = {
         damageColor = { r = 0.32, g = 0.52, b = 1.0, a = 1.0 },
         unknownColor = { r = 0.72, g = 0.72, b = 0.78, a = 1.0 },
     },
+    roleOverlay = {
+        enabled = false,
+        showTanks = true,
+        showHealers = true,
+        tankMode = "icon",
+        healerMode = "icon",
+    },
     ezoStatus = {
         showPlayerStatus = false,
         showPing = false,
@@ -152,7 +159,7 @@ function ADDON.RegisterWithEZOCore()
             id = "ezogroupframes",
             name = ADDON.ADDON_NAME or "EZOGroupFrames",
             version = ADDON.ADDON_VERSION or "0.0.0",
-            addOnVersion = 117,
+            addOnVersion = 119,
             apiVersion = 1,
             capabilities = {
                 "family.language.consumer",
@@ -317,6 +324,9 @@ function ADDON.Initialize()
     end
     if EZOGroupFrames_Frames and EZOGroupFrames_Frames.Init then
         EZOGroupFrames_Frames.Init()
+    end
+    if EZOGroupFrames_RoleOverlay and EZOGroupFrames_RoleOverlay.Init then
+        EZOGroupFrames_RoleOverlay.Init()
     end
     ADDON.RegisterLayoutWithEZOCore()
 end

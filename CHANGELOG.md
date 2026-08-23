@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.19 - Live Group Member Resolution
+
+- Resolves live members with `GetGroupUnitTagByIndex()` instead of fabricating `groupN` tags from the group size.
+- Includes the local player in the custom frame list and prevents a real four-member group from being labeled as the sample preview.
+
+## 0.1.18 - Tank and Healer Reference Overlay
+
+- Adds an optional HUD world-space overlay for visible group tanks and healers.
+- Supports independent tank/healer selection and `Icon only`, `Name only`, or `Icon and name` modes.
+- Reuses the existing role colors, suppresses the overlay in PvP contexts, and separates its lane from
+  `EZOCustomSupportIcons` when that provider API is available.
+
 ## 0.1.17 - Dependent Settings Refresh
 
 - Refreshes the EZOCore-hosted and standalone settings panels after master toggles change dependent control availability.

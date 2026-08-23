@@ -470,13 +470,15 @@ function FRAMES.Refresh()
         or not EZOGroupFrames_HudVisibility.IsHudScene
         or EZOGroupFrames_HudVisibility.IsHudScene()
 
+    local previewMode = EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.GetPreviewMode and EZOGroupFrames_DebugSimulation.GetPreviewMode() or 0
     local isPreviewActive = enabled and isHudScene and EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.IsActive and EZOGroupFrames_DebugSimulation.IsActive()
     local isEditModeActive = enabled and isHudScene and FRAMES.layoutEditMode == true
+    local isSampleDisplay = isPreviewActive
 
     if #members == 0 and (isEditModeActive or isPreviewActive) and EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.GetSampleMembers then
-        local mode = EZOGroupFrames_DebugSimulation.GetPreviewMode and EZOGroupFrames_DebugSimulation.GetPreviewMode() or 0
-        local count = (mode == 4) and 4 or 12
+        local count = (previewMode == 4) and 4 or 12
         members = EZOGroupFrames_DebugSimulation.GetSampleMembers(count)
+        isSampleDisplay = true
     end
 
     local functionalShow = ShouldShow(members)
@@ -501,11 +503,10 @@ function FRAMES.Refresh()
     end
 
     if FRAMES.container.title then
-        local mode = EZOGroupFrames_DebugSimulation and EZOGroupFrames_DebugSimulation.GetPreviewMode and EZOGroupFrames_DebugSimulation.GetPreviewMode() or 0
-        if mode == 12 or #members == 12 then
-            FRAMES.container.title:SetText(GetString(EZO_GF_STATUS_GROUP_PREVIEW_12))
-        elseif mode == 4 or #members == 4 then
+        if isSampleDisplay and (previewMode == 4 or #members == 4) then
             FRAMES.container.title:SetText(GetString(EZO_GF_STATUS_GROUP_PREVIEW_4))
+        elseif isSampleDisplay then
+            FRAMES.container.title:SetText(GetString(EZO_GF_STATUS_GROUP_PREVIEW_12))
         else
             FRAMES.container.title:SetText(GetString(EZO_GF_STATUS_GROUP))
         end
