@@ -17,6 +17,14 @@ local LEADER_ICON_TEXTURE = "EsoUI/Art/Icons/MapKey/mapkey_groupleader.dds"
 local CONSUMED_BAR_COLOR = { 0.20, 0.20, 0.22, 0.88 }
 local FILL_SHEEN_COLOR = { 1.0, 1.0, 1.0, 0.12 }
 local INNER_SHADE_COLOR = { 0, 0, 0, 0.16 }
+local MEMBER_STATUS_VISUALS = {
+    normal = { alpha = 1.00, desaturate = 0.00 },
+    far = { alpha = 0.62, desaturate = 0.20 },
+    instance = { alpha = 0.50, desaturate = 0.00 },
+    world = { alpha = 0.44, desaturate = 0.00 },
+    region = { alpha = 0.44, desaturate = 0.00 },
+    offline = { alpha = 0.34, desaturate = 1.00 },
+}
 
 local function IsEnabled()
     return EZOGroupFrames
@@ -81,6 +89,17 @@ local function GetRoleColor(role)
         return 0.72, 0.72, 0.78, 1
     end
     return color.r or 1, color.g or 1, color.b or 1, color.a or 1
+end
+
+local function GetMemberStatusVisual(member)
+    return MEMBER_STATUS_VISUALS[member and member.statusKey or "normal"] or MEMBER_STATUS_VISUALS.normal
+end
+
+local function ApplyMemberStatusTone(member, r, g, b)
+    local visual = GetMemberStatusVisual(member)
+    local gray = (r + g + b) / 3
+    local amount = visual.desaturate or 0
+    return r + (gray - r) * amount, g + (gray - g) * amount, b + (gray - b) * amount
 end
 
 local function GetRoleIcon(role)
@@ -313,6 +332,7 @@ local function UpdateBar(row, member)
     local percent = tonumber(member.healthPercent) or 0
     local ratio = maximum > 0 and zo_clamp(current / maximum, 0, 1) or 0
     local r, g, b = GetRoleColor(member.role)
+    r, g, b = ApplyMemberStatusTone(member, r, g, b)
 
     row.consumed:SetColor(unpack(CONSUMED_BAR_COLOR))
     row.consumed:SetMinMax(0, math.max(1, maximum))
@@ -522,7 +542,10 @@ function FRAMES.Refresh()
         row:SetHidden(member == nil)
         PositionRow(row, i)
         if member then
+            local visual = GetMemberStatusVisual(member)
+            row:SetAlpha(visual.alpha)
             local r, g, b = GetRoleColor(member.role)
+            r, g, b = ApplyMemberStatusTone(member, r, g, b)
             local roleIcon = GetRoleIcon(member.role)
             row.name:SetText(BuildDisplayName(member))
             if roleIcon then

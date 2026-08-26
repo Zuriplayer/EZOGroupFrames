@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.21 - Group Member Availability Visuals
+
+- Keeps unavailable group rows visible while attenuating out-of-range or out-of-instance members without removing their role color; disconnected members use grey.
+- Refreshes availability visuals on group, zone, connection, remote-region, and support-range updates.
+
 ## 0.1.19 - Live Group Member Resolution
 
 - Resolves live members with `GetGroupUnitTagByIndex()` instead of fabricating `groupN` tags from the group size.

@@ -127,6 +127,42 @@ local function IsSameUnit(firstUnitTag, secondUnitTag)
     return false
 end
 
+local function SafeBooleanCall(callback, unitTag)
+    if type(callback) ~= "function" then
+        return nil
+    end
+    local ok, value = pcall(callback, unitTag)
+    if not ok then
+        return nil
+    end
+    return value == true
+end
+
+local function GetMemberStatus(unitTag)
+    if unitTag == "player" or IsSameUnit(unitTag, "player") then
+        return "normal"
+    end
+
+    local online = SafeBooleanCall(IsUnitOnline, unitTag)
+    if online == false then
+        return "offline"
+    end
+
+    if SafeBooleanCall(IsGroupMemberInRemoteRegion, unitTag) == true then
+        return "region"
+    end
+    if SafeBooleanCall(IsGroupMemberInSameWorldAsPlayer, unitTag) == false then
+        return "world"
+    end
+    if SafeBooleanCall(IsGroupMemberInSameInstanceAsPlayer, unitTag) == false then
+        return "instance"
+    end
+    if SafeBooleanCall(IsUnitInGroupSupportRange, unitTag) == false then
+        return "far"
+    end
+    return "normal"
+end
+
 local function AddMember(members, seen, unitTag, localPlayerGroupTag)
     if type(unitTag) ~= "string" or unitTag == "" or seen[unitTag] then
         return false
@@ -150,6 +186,7 @@ local function AddMember(members, seen, unitTag, localPlayerGroupTag)
         currentHealth = currentHealth,
         maxHealth = maxHealth,
         healthPercent = healthPercent,
+        statusKey = GetMemberStatus(unitTag),
     }
     return isPlayer
 end
@@ -213,6 +250,12 @@ function STATE.Init()
         EVENT_GROUP_UPDATE,
         EVENT_LEADER_UPDATE,
         EVENT_GROUP_MEMBER_ROLE_CHANGED,
+        EVENT_GROUP_MEMBER_CONNECTED_STATUS,
+        EVENT_GROUP_MEMBER_IN_REMOTE_REGION,
+        EVENT_GROUP_MEMBER_SUBZONE_CHANGED,
+        EVENT_GROUP_SUPPORT_RANGE_UPDATE,
+        EVENT_PLAYER_ACTIVATED,
+        EVENT_ZONE_UPDATE,
         EVENT_UNIT_DEATH_STATE_CHANGED,
         EVENT_POWER_UPDATE,
     }

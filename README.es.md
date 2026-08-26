@@ -11,8 +11,8 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 ## Metadatos de versión
 
-- Versión del addon: `0.1.19`
-- AddOnVersion: `119`
+- Versión del addon: `0.1.21`
+- AddOnVersion: `121`
 - APIVersion: `101049 101050`
 - Estado: beta pública
 
@@ -45,6 +45,8 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Miembros del grupo ordenados por rol LFG seleccionado y después por nombre.
 - Iconos nativos de ESO para los roles de tanque, healer y DD.
 - Barras de salud usando los valores de salud actual y máxima indicados por ESO.
+- Las filas siguen visibles cuando un miembro no está disponible: quienes están fuera del alcance de soporte o en otra
+  instancia/región conservan su color de rol con menor opacidad; solo los desconectados pasan a gris completo.
 - Texto de salud con salud actual/máxima y una etiqueta de porcentaje.
 - Icono de corona de alto contraste del líder de grupo en la barra de salud del líder.
 - Colores de rol configurables para tanque, healer, DD y rol desconocido.
@@ -185,6 +187,8 @@ Para probar la beta, revisa:
 - Con EZOCustomSupportIcons instalado, comprueba que los marcadores de rol no se solapan con sus iconos configurados o
   tácticos; repite sin EZOCustomSupportIcons para confirmar que el renderer independiente funciona.
 - En PvP y battlegrounds, comprueba que el overlay de rol permanece oculto en lugar de mostrar roles obsoletos.
+- Aleja a un miembro fuera del alcance de soporte, llévalo a otra instancia/región y desconéctalo; comprueba que la fila
+  sigue visible con la transparencia y desaturación correspondientes en lugar de desaparecer.
 - La UI se comprueba en modo teclado y modo gamepad.
 
 ## Licencia

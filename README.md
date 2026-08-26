@@ -11,8 +11,8 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 ## Version Metadata
 
-- Addon version: `0.1.19`
-- AddOnVersion: `119`
+- Addon version: `0.1.21`
+- AddOnVersion: `121`
 - APIVersion: `101049 101050`
 - Status: public beta
 
@@ -45,6 +45,8 @@ AddOns/EZOGroupFrames/EZOGroupFrames.txt
 - Group members sorted by selected LFG role and then by name.
 - Native ESO role icons for tank, healer and damage dealer.
 - Health bars using the current and maximum health values reported by ESO.
+- Group rows remain visible when a member is unavailable: members outside support range or in another instance/region
+  keep their role colors with reduced opacity, while only disconnected members become fully grey.
 - Health text with current/max health and a percentage label.
 - High-contrast group leader crown icon on the leader's health bar.
 - Configurable role colors for tank, healer, damage dealer and unknown role.
@@ -185,6 +187,8 @@ For beta testing, please verify:
 - With EZOCustomSupportIcons installed, verify role markers do not overlap its configured or tactical head icons; repeat
   without EZOCustomSupportIcons to confirm the standalone renderer works.
 - In PvP and battleground contexts, verify the role overlay stays hidden rather than presenting stale role data.
+- Move a group member outside support range, into another instance/region, and offline; verify the row remains visible
+  with the corresponding transparency and desaturation instead of disappearing.
 - The UI is checked in keyboard and gamepad modes.
 
 ## License
