@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.22 - Right-button Frame Dragging and API 101051
+
+- Standardizes custom group-frame panel movement on the right mouse button.
+- Updates the addon manifest and documented compatibility target to ESO API 101051.
+
 ## 0.1.21 - Group Member Availability Visuals
 
 - Keeps unavailable group rows visible while attenuating out-of-range or out-of-instance members without removing their role color; disconnected members use grey.

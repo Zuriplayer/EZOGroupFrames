@@ -11,9 +11,9 @@ EZOGroupFrames está en beta pública. Es usable para pruebas, pero su diseño y
 
 ## Metadatos de versión
 
-- Versión del addon: `0.1.21`
-- AddOnVersion: `121`
-- APIVersion: `101049 101050`
+- Versión del addon: `0.1.22`
+- AddOnVersion: `122`
+- APIVersion: `101051`
 - Estado: beta pública
 
 ## Requisitos
@@ -170,6 +170,8 @@ Para probar la beta, revisa:
 - La selección de idioma funciona en inglés y español.
 - Los frames propios aparecen en un grupo real.
 - El panel puede moverse cuando está desbloqueado y queda fijo cuando está bloqueado.
+- Mueve el panel con el botón derecho; el comportamiento del clic izquierdo no
+  cambia.
 - El modo central muestra una previsualización movible solo al volver a HUD/HUD_UI y no altera el ajuste de bloqueo guardado.
 - Los valores de salud se actualizan cuando los miembros del grupo reciben daño o curación.
 - El líder del grupo aparece marcado con un icono de corona legible en la barra de salud.

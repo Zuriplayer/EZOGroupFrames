@@ -21,7 +21,7 @@ EZO_GROUP_FRAMES_STRINGS_ES = {
         "Los frames nativos de ESO se controlan por separado con la opción de ocultación nativa.",
     EZO_GF_OPTION_FRAMES_LOCK = "Bloquear posición",
     EZO_GF_OPTION_FRAMES_LOCK_TOOLTIP = "Cuando está bloqueado, el panel propio de frames no se puede arrastrar. " ..
-        "Desbloquéalo y arrástralo con el botón izquierdo para guardar su posición.",
+        "Desbloquéalo y arrástralo con el botón derecho para guardar su posición.",
     EZO_GF_OPTION_FRAMES_SCALE = "Escala de frames",
     EZO_GF_OPTION_FRAMES_SCALE_TOOLTIP = "Ajusta el tamaño del panel propio de frames de grupo " ..
         "sin cambiar su posición guardada.",

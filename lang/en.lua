@@ -20,7 +20,7 @@ EZO_GROUP_FRAMES_STRINGS_EN = {
         "ESO native group frames are controlled separately by the native-frame hiding option.",
     EZO_GF_OPTION_FRAMES_LOCK = "Lock frame position",
     EZO_GF_OPTION_FRAMES_LOCK_TOOLTIP = "When locked, the custom frame panel cannot be dragged. " ..
-        "Unlock it and drag with the left mouse button to save its position.",
+        "Unlock it and drag with the right mouse button to save its position.",
     EZO_GF_OPTION_FRAMES_SCALE = "Frame scale",
     EZO_GF_OPTION_FRAMES_SCALE_TOOLTIP = "Adjusts the size of the custom group-frame panel " ..
         "without changing its saved position.",

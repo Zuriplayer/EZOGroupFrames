@@ -11,9 +11,9 @@ EZOGroupFrames is in public beta. It is usable for testing, but its layout and f
 
 ## Version Metadata
 
-- Addon version: `0.1.21`
-- AddOnVersion: `121`
-- APIVersion: `101049 101050`
+- Addon version: `0.1.22`
+- AddOnVersion: `122`
+- APIVersion: `101051`
 - Status: public beta
 
 ## Requirements
@@ -170,6 +170,8 @@ For beta testing, please verify:
 - Language selection works in English and Spanish.
 - Custom frames appear in a real group.
 - The panel can be moved when unlocked and stays fixed when locked.
+- Move the panel with the right mouse button; left-click behavior remains
+  unchanged.
 - Central layout mode shows a movable preview only after returning to HUD/HUD_UI and does not alter the saved lock setting.
 - Health values update when group members take damage or heal.
 - The group leader is marked with a readable crown icon on the health bar.

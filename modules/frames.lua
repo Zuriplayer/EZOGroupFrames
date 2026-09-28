@@ -423,7 +423,7 @@ local function EnsureControls()
     container:SetClampedToScreen(true)
     container:SetHidden(true)
     container:SetHandler("OnMouseDown", function(control, button)
-        if button ~= MOUSE_BUTTON_INDEX_LEFT or FRAMES.moveEnabled ~= true then
+        if button ~= MOUSE_BUTTON_INDEX_RIGHT or FRAMES.moveEnabled ~= true then
             return
         end
         FRAMES.dragActive = true
@@ -431,7 +431,7 @@ local function EnsureControls()
         control:StartMoving()
     end)
     container:SetHandler("OnMouseUp", function(control, button)
-        if button ~= MOUSE_BUTTON_INDEX_LEFT or FRAMES.dragActive ~= true then
+        if button ~= MOUSE_BUTTON_INDEX_RIGHT or FRAMES.dragActive ~= true then
             return
         end
         control:StopMovingOrResizing()

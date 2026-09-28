@@ -1,5 +1,5 @@
 EZOGroupFrames = EZOGroupFrames or {}
 
 EZOGroupFrames.ADDON_NAME = "EZOGroupFrames"
-EZOGroupFrames.ADDON_VERSION = "0.1.21"
+EZOGroupFrames.ADDON_VERSION = "0.1.22"
 EZOGroupFrames.AUTHOR = "@Zuriplayer"
